@@ -1,6 +1,7 @@
 package com.stiproject.kelassti.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.model.request.LoginRequest
@@ -27,14 +28,18 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
 
     fun userLogin(data: LoginRequest, action: (String) -> Unit){
         viewModelScope.launch{
-            val response = repo.userLogin(data)
-            val body = response.body()
-            if (response.isSuccessful){
-                body?.access_token?.let {
-                    action("berhasil login ${body.access_token}")
-                } ?: action("gagal login $body")
-            } else {
-                action("gagal login $body")
+            try {
+                val response = repo.userLogin(data)
+                val body = response.body()
+                if (response.isSuccessful) {
+                    body?.access_token?.let {
+                        action("berhasil login ${body.access_token}")
+                    } ?: action("gagal login $body")
+                } else {
+                    action("gagal login $body")
+                }
+            } catch (e: Exception){
+                Log.d("errr",e.message.toString())
             }
         }
     }

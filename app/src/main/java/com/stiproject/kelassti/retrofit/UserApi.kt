@@ -9,7 +9,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UserApi {
-
     @POST("/auth/register")
     suspend fun userRegister(
         @Body registerRequest: RegisterRequest
