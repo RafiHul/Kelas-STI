@@ -2,6 +2,7 @@ package com.stiproject.kelassti.retrofit
 
 import com.stiproject.kelassti.model.request.LoginRequest
 import com.stiproject.kelassti.model.request.RegisterRequest
+import com.stiproject.kelassti.model.response.AccesTokenMsg
 import com.stiproject.kelassti.model.response.Msg
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,5 +18,5 @@ interface UserApi {
     @POST("/auth/login")
     suspend fun userLogin(
         @Body loginRequest: LoginRequest
-    ): Response<Msg>
+    ): Response<AccesTokenMsg>
 }
