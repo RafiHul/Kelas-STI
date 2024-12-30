@@ -1,12 +1,13 @@
 package com.stiproject.kelassti.viewmodel
 
 import android.app.Application
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.model.request.LoginRequest
 import com.stiproject.kelassti.model.request.RegisterRequest
 import com.stiproject.kelassti.repository.UserRepository
+import com.stiproject.kelassti.util.DataStoreUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,27 +20,24 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
             val response = repo.userRegister(data)
             val body = response.body()
             if (response.isSuccessful){
-                action("Berhasil Register $body")
+                action(body?.message.toString())
             } else {
-                action("gagal register $body")
+                action(response.message())
             }
         }
     }
 
-    fun userLogin(data: LoginRequest, action: (String) -> Unit){
+    fun userLogin(context: Context, data: LoginRequest, action: (String) -> Unit){
         viewModelScope.launch{
-            try {
-                val response = repo.userLogin(data)
-                val body = response.body()
-                if (response.isSuccessful) {
-                    body?.access_token?.let {
-                        action("berhasil login ${body.access_token}")
-                    } ?: action("gagal login $body")
-                } else {
-                    action("gagal login $body")
-                }
-            } catch (e: Exception){
-                Log.d("errr",e.message.toString())
+            val response = repo.userLogin(data)
+            val body = response.body()
+            if (response.isSuccessful) {
+                body!!.data?.let {
+                    DataStoreUtil.saveLoginToken(context,it.access_token)
+                    action(body.message)
+                } ?: action(body.message)
+            } else {
+                action(response.message())
             }
         }
     }

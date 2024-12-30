@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentLoginBinding
 import com.stiproject.kelassti.model.request.LoginRequest
+import com.stiproject.kelassti.util.DataStoreUtil
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import kotlin.getValue
 
@@ -45,10 +46,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val password = binding.editTextTextPasswordLogin.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()){
-                userViewModel.userLogin(
-                    LoginRequest(username,password)
-                ){
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                try {
+                    val usernamenum = username.toInt()
+                    userViewModel.userLogin(requireContext(),LoginRequest(usernamenum,password)){
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: NumberFormatException){
+                    Toast.makeText(context, "Masukkan Angka NIM", Toast.LENGTH_SHORT).show()
                 }
             }
         }
