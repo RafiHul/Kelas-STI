@@ -33,7 +33,7 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
             val body = response.body()
             if (response.isSuccessful) {
                 body!!.data?.let {
-                    DataStoreUtil.saveLoginToken(context,it.access_token)
+                    DataStoreUtil.saveLoginToken(context,it.accessToken)
                     action(body.message)
                 } ?: action(body.message)
             } else {

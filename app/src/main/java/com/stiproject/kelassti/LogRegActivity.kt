@@ -1,33 +1,37 @@
 package com.stiproject.kelassti
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.stiproject.kelassti.databinding.ActivityMainBinding
+import com.stiproject.kelassti.databinding.ActivityLogRegBinding
 import com.stiproject.kelassti.util.DataStoreUtil
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class LogRegActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLogRegBinding
 
     val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLogRegBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         lifecycleScope.launch{
             DataStoreUtil.getLoginToken(application).collect{
-                Log.d("access token",it)
+                if (it.isNotEmpty()) {
+                    val intent = Intent(application, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
     }
