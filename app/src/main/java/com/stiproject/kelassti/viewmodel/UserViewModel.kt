@@ -22,7 +22,7 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
             if (response.isSuccessful){
                 action(body?.message.toString())
             } else {
-                action(response.message())
+                action(body?.message ?: "Failed To Connect")
             }
         }
     }
@@ -37,7 +37,7 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
                     action(body.message)
                 } ?: action(body.message)
             } else {
-                action(response.message())
+                action(body?.message ?: "Failed To Connect")
             }
         }
     }
