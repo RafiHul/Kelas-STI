@@ -2,6 +2,7 @@ package com.stiproject.kelassti.application
 
 import android.app.Application
 import com.stiproject.kelassti.repository.UserRepository
+import com.stiproject.kelassti.viewmodel.state.UserDataHolder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +19,6 @@ class MyApplication: Application() {
 
         @Provides
         @Singleton
-        fun provideUserRepository() = UserRepository()
+        fun provideUserRepository(userDataHolder: UserDataHolder) = UserRepository(userDataHolder)
     }
 }

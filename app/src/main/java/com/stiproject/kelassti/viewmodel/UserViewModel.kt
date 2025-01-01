@@ -2,6 +2,7 @@ package com.stiproject.kelassti.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.model.request.LoginRequest
@@ -14,6 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(app: Application, val repo: UserRepository): AndroidViewModel(app) {
+
+    val userState = repo.userState
 
     fun userRegister(data: RegisterRequest, action: (String) -> Unit){
         viewModelScope.launch{
