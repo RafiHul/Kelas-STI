@@ -42,9 +42,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         binding.buttonRegister.setOnClickListener{
             val username = binding.editTextTextPasswordRegister.text.toString()
             val password = binding.editTextTextPasswordRegister.text.toString()
-            userViewModel.userRegister(
-                RegisterRequest(username,password)
-            ){
+            userViewModel.userRegister(RegisterRequest(username,password)){
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
         }

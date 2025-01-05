@@ -1,13 +1,13 @@
 package com.stiproject.kelassti
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.stiproject.kelassti.databinding.ActivityMainBinding
-import com.stiproject.kelassti.util.DataStoreUtil
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,8 +26,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         lifecycleScope.launch{
-            DataStoreUtil.getLoginToken(application).collect{
-                Log.d("access token",it)
+            userViewModel.getUsersByJwt(application){
+                if (it == "401"){
+                    val intent = Intent(application, LogRegActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+                Toast.makeText(application, it, Toast.LENGTH_SHORT).show()
+                //tidak ada error handling ketika jwt expired
             }
         }
     }

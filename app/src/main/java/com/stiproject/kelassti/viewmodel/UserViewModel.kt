@@ -30,18 +30,47 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
         }
     }
 
-    fun userLogin(context: Context, data: LoginRequest, action: (String) -> Unit){
+    fun userLogin(context: Context, data: LoginRequest, actionSuccessLogin: (String) -> Unit, actionFailedLogin: (String) -> Unit){
         viewModelScope.launch{
             val response = repo.userLogin(data)
             val body = response.body()
             if (response.isSuccessful) {
                 body!!.data?.let {
-                    DataStoreUtil.saveLoginToken(context,it.accessToken)
-                    action(body.message)
-                } ?: action(body.message)
+                    setJwtToken(context, it.accessToken)
+                    actionSuccessLogin(body.message)
+                } ?: actionFailedLogin(body.message)
             } else {
-                action(body?.message ?: "Failed To Connect")
+                actionFailedLogin(body?.message ?: "Failed To Connect")
             }
         }
     }
+
+    fun getUsersByJwt(context: Context, action: (String) -> Unit){
+        viewModelScope.launch{
+            val jwttoken = getJwtBearer()
+            val response = repo.getUsersByJwt(jwttoken)
+            val body = response.body()
+            if (response.isSuccessful && body != null){
+                repo.userState.setUserData(body.data)
+                action("Selamat Datang ${body.data?.name}")
+            } else {
+                Log.d("getuserbyjwtviewmodel",response.message())
+                clearJwtToken(context)
+                action(response.code().toString())
+            }
+        }
+    }
+
+    suspend fun setJwtToken(context: Context,token: String){
+        userState.setJwtToken(token)
+        DataStoreUtil.saveLoginToken(context,token)
+    }
+
+    suspend fun clearJwtToken(context: Context){
+        DataStoreUtil.clearLoginInfo(context)
+    }
+
+    fun getJwtBearer(): String = "Bearer ${userState.userState.value?.jwtToken}"
+
+
 }

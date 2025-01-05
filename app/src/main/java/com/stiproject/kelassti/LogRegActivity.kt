@@ -25,12 +25,12 @@ class LogRegActivity : AppCompatActivity() {
         binding = ActivityLogRegBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycleScope.launch{
-            DataStoreUtil.getLoginToken(application).collect{
+        lifecycleScope.launch {
+            DataStoreUtil.getLoginToken(this@LogRegActivity).collect {
                 if (it.isNotEmpty()) {
-                    val intent = Intent(application, MainActivity::class.java)
+                    val intent = Intent(this@LogRegActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    finish()
                 }
             }
         }
