@@ -37,9 +37,7 @@ class MainActivity : AppCompatActivity() {
         myDrawerLayout.addDrawerListener(toggle)
 
         toggle.syncState()
-        toggle.setHomeAsUpIndicator(R.drawable.baseline_dehaze_24)
-
-        Log.i("jwt",userViewModel.getJwtBearer())
+        toggle.setHomeAsUpIndicator(R.drawable.baseline_attach_money_24)
 
         lifecycleScope.launch{
             userViewModel.getUsersByJwt(application){

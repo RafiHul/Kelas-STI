@@ -28,6 +28,7 @@ class LogRegActivity : AppCompatActivity() {
         lifecycleScope.launch {
             DataStoreUtil.getLoginToken(this@LogRegActivity).collect {
                 if (it.isNotEmpty()) {
+                    userViewModel.setJwtToken(this@LogRegActivity,it)
                     val intent = Intent(this@LogRegActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
