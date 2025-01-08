@@ -2,9 +2,11 @@ package com.stiproject.kelassti
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.stiproject.kelassti.databinding.ActivityMainBinding
@@ -23,7 +25,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        val myDrawerLayout = binding.mainDrawerLayout
+        val myToolbar = binding.myToolbar
         setContentView(binding.root)
+        setSupportActionBar(myToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        val toggle = ActionBarDrawerToggle(this,myDrawerLayout,myToolbar,R.string.drawer_open,R.string.drawer_close)
+
+        toggle.isDrawerIndicatorEnabled = true
+        myDrawerLayout.addDrawerListener(toggle)
+
+        toggle.syncState()
+        toggle.setHomeAsUpIndicator(R.drawable.baseline_dehaze_24)
+
+        Log.i("jwt",userViewModel.getJwtBearer())
 
         lifecycleScope.launch{
             userViewModel.getUsersByJwt(application){

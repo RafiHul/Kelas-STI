@@ -17,6 +17,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(app: Application, val repo: UserRepository): AndroidViewModel(app) {
 
     val userState = repo.userState
+    val userData = userState.userState
 
     fun userRegister(data: RegisterRequest, action: (String) -> Unit){
         viewModelScope.launch{
