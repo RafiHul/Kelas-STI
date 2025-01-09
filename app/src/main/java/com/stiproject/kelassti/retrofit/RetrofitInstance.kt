@@ -14,4 +14,8 @@ object RetrofitInstance {
     val getUserService: UserApi by lazy {
         retrofit.create(UserApi::class.java)
     }
+
+    val getTransaksiService: TransaksiApi by lazy {
+        retrofit.create(TransaksiApi::class.java)
+    }
 }
