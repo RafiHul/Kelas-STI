@@ -41,6 +41,11 @@ class HomePageFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
             adapter = tasksAdapter
         }
+
+        binding.recyclerViewAnnoucement.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+            adapter = tasksAdapter
+        }
     }
 
     override fun onDestroyView() {

@@ -5,13 +5,13 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProfileFragment" >
+    tools:context=".fragment.ProfileFragment">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="400dp"
         android:fontFamily="@font/inter_semibold"
         android:text="ProfilKu"
         android:textSize="36sp"
@@ -30,6 +30,7 @@
         tools:src="@tools:sample/avatars" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -52,9 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
-            android:textStyle="bold"
             android:text="@string/nim_profile"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewRoleProfile"
@@ -62,8 +63,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="@string/role_profile"
-            android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
@@ -79,10 +80,10 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePic" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
