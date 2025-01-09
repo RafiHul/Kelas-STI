@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
+import com.stiproject.kelassti.adapter.TasksAdapter
 import com.stiproject.kelassti.databinding.FragmentHomePageBinding
+import com.stiproject.kelassti.util.TempData
 import com.stiproject.kelassti.viewmodel.UserViewModel
 
 class HomePageFragment : Fragment() {
@@ -33,5 +36,15 @@ class HomePageFragment : Fragment() {
             binding.textViewUsernameHomePage.text = getString(R.string.name_homepage,it.userData?.name ?: "null")
         }
 
+        val tasksAdapter = TasksAdapter(TempData.tasksTempItem)
+        binding.recyclerViewTasks.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+            adapter = tasksAdapter
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
