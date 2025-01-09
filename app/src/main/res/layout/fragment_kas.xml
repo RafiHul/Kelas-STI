@@ -150,7 +150,7 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
                 <TextView
-                    android:id="@+id/textView24"
+                    android:id="@+id/textViewPengeluaranKas"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
@@ -199,16 +199,16 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="500dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="10dp"
         android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
         app:layout_constraintTop_toBottomOf="@+id/textView25">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTransaksi"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.google.android.material.card.MaterialCardView>

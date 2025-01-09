@@ -1,5 +1,6 @@
 package com.stiproject.kelassti.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.stiproject.kelassti.KasActivity
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.adapter.TasksAdapter
 import com.stiproject.kelassti.databinding.FragmentHomePageBinding
@@ -45,6 +47,11 @@ class HomePageFragment : Fragment() {
         binding.recyclerViewAnnoucement.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
             adapter = tasksAdapter
+        }
+
+        binding.materialCardView3.setOnClickListener{
+            val intent = Intent(context,KasActivity::class.java)
+            startActivity(intent)
         }
     }
 
