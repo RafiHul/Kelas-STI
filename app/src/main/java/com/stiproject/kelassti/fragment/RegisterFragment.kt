@@ -48,8 +48,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 
