@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue_primary">#212938</color>
+    <color name="pemasukan_kas">#22C55E</color>
+    <color name="pengeluaran_kas">#B80D0D</color>
 </resources>
