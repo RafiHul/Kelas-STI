@@ -14,7 +14,7 @@ class TransaksiAdapter(val context: Context): RecyclerView.Adapter<TransaksiAdap
     inner class MyViewHolder(val binding: RecyclerviewitemTransaksikasBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: TransaksiData){
 
-            binding.textViewNameMahasiswaKas.text = currentItem.NIM_mahasiswa.toString()
+            binding.textViewNameMahasiswaKas.text = currentItem.nama
             binding.textViewDeksripsi.text = currentItem.deskripsi
             binding.textViewTanggalKas.text = currentItem.tanggal
 
