@@ -23,10 +23,16 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
         viewModelScope.launch{
             val response = repo.userRegister(data)
             val body = response.body()
+
+            if (response.code() == 409){ //conflict
+                action("username telah di gunakan")
+                return@launch
+            }
+
             if (response.isSuccessful){
                 action(body?.message.toString())
             } else {
-                action(body?.message ?: "Failed To Connect")
+                action(body?.message ?: response.message())
             }
         }
     }
