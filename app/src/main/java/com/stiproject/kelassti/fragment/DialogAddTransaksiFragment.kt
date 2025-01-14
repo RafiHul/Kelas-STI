@@ -142,7 +142,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+            650
         )
     }
 
