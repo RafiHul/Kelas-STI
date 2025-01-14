@@ -70,7 +70,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
         }
     }
 
-    fun getTransaksiById(id: Long, action: (TransaksiData?) -> Unit) {
+    fun getTransaksiById(id: Int, action: (TransaksiData?) -> Unit) {
         viewModelScope.launch {
             val response = repo.getTransaksiById(id.toString())
             val body = response.body()
@@ -84,7 +84,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
         }
     }
 
-    fun updateTransaksiById(id: Long, jwtToken: String, kasRequest: KasRequest, action: (String) -> Unit){
+    fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (String) -> Unit){
         viewModelScope.launch{
             val response = repo.updateTransaksiById(id.toString(), jwtToken, kasRequest)
             val body = response.body()
