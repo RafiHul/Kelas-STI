@@ -10,4 +10,8 @@
     <string name="rupiah_format">Rp. %1$s</string>
     <string name="rupiah_pemasukan_kas">+Rp. %1$s</string>
     <string name="rupiah_pengeluaran_kas">-Rp. %1$s</string>
+    <string-array name="kas_type">
+        <item>Pemasukan</item>
+        <item>Pengeluaran</item>
+    </string-array>
 </resources>

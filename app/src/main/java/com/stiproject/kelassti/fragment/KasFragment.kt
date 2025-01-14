@@ -49,7 +49,13 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
         }
         // ini jadiin 1 aja sama pair atau map biar gk ribet
 
-        val transaksiAdapter = TransaksiAdapter(requireContext())
+        val transaksiAdapter = TransaksiAdapter(requireContext()){
+            DialogAddTransaksiFragment.newInstance(it).show(parentFragmentManager,"Transaksi Edit")
+        }
+
+        binding.imageButtonAddTransaksi.setOnClickListener{
+            DialogAddTransaksiFragment().show(parentFragmentManager,"Transaksi New")
+        }
 
         binding.recyclerViewTransaksi.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)

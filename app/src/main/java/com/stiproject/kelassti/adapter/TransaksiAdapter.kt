@@ -10,7 +10,7 @@ import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.RecyclerviewitemTransaksikasBinding
 import com.stiproject.kelassti.model.response.transaksi.TransaksiData
 
-class TransaksiAdapter(val context: Context): RecyclerView.Adapter<TransaksiAdapter.MyViewHolder>() {
+class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit): RecyclerView.Adapter<TransaksiAdapter.MyViewHolder>() {
     inner class MyViewHolder(val binding: RecyclerviewitemTransaksikasBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: TransaksiData){
 
@@ -26,6 +26,9 @@ class TransaksiAdapter(val context: Context): RecyclerView.Adapter<TransaksiAdap
                 binding.textViewPemasukanAtauPengeluaranKas.text = context.getString(R.string.rupiah_pengeluaran_kas,currentItem.nominal.toString())
             }
 
+            binding.root.setOnClickListener{
+                actionClickCard(currentItem.id)
+            }
         }
     }
 

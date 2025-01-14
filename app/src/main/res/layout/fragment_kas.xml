@@ -177,7 +177,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButtonAddTransaksi"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="#CFBDFE"
@@ -194,7 +194,7 @@
         android:background="#EFB8C8"
         android:src="@drawable/outline_edit_24"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonAddTransaksi"
         app:layout_constraintTop_toTopOf="@+id/textView25" />
 
     <com.google.android.material.card.MaterialCardView

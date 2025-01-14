@@ -19,6 +19,7 @@ class KasActivity : AppCompatActivity() {
     private lateinit var binding: ActivityKasBinding
 
     val transaksiViewModel: TransaksiViewModel by viewModels()
+    val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

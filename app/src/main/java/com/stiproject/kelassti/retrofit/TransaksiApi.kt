@@ -7,8 +7,8 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface TransaksiApi {
@@ -26,7 +26,7 @@ interface TransaksiApi {
         @Path("id") id: String
     ): Response<TransaksiDataByIdResponse>
 
-    @PUT("/transaksi/{id}")
+    @PATCH("/transaksi/{id}")
     suspend fun updateTransaksiById(
         @Path("id") id: String,
         @Header("Authorization") jwt: String,
