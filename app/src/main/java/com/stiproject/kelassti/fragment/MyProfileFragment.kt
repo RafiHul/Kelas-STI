@@ -25,7 +25,6 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentMyProfileBinding.inflate(layoutInflater, container, false)
-
         return binding.root
     }
 
@@ -44,11 +43,11 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 }
                 binding.includeEmailSection.apply {
                     textViewLabelProfileInfo.text = "Email"
-                    textViewValueProfileInfo.text = "Atmin@example.com"
+                    textViewValueProfileInfo.text = "loremipsum@example.com"
                 }
                 binding.includeNimSection.apply {
                     textViewLabelProfileInfo.text = "NIM"
-                    textViewValueProfileInfo.text = userDat.usernameByNIM.toString()
+                    textViewValueProfileInfo.text = getString(R.string.name_homepage,userDat.usernameByNIM.toString())
                 }
                 binding.includeSemesterSection.apply {
                     textViewLabelProfileInfo.text = "Semester"

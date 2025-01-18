@@ -7,9 +7,9 @@
     tools:context=".fragment.HomePageFragment">
     
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/frameLayout4"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:id="@+id/frameLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -47,11 +47,23 @@
                     android:text="Hi, Sigma Skibidi"
                     android:textColor="@color/white"
                     android:textSize="20sp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toTopOf="@+id/textView10"
                     app:layout_constraintEnd_toEndOf="@+id/textView10"
                     app:layout_constraintStart_toStartOf="@+id/textView10" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/textViewUsernameHomePageLoading"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="@color/LoadingColor"
+                    app:cardCornerRadius="6dp"
+                    app:strokeWidth="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewUsernameHomePage"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewUsernameHomePage"
+                    app:layout_constraintStart_toStartOf="@+id/textViewUsernameHomePage"
+                    app:layout_constraintTop_toTopOf="@+id/textViewUsernameHomePage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,6 +81,7 @@
                 android:layout_height="78dp"
                 android:layout_marginEnd="165dp"
                 app:rippleColor="@color/black"
+                app:strokeWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -108,6 +121,7 @@
                 android:layout_width="156dp"
                 android:layout_height="78dp"
                 android:layout_marginStart="165dp"
+                app:strokeWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -143,9 +157,10 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView3"
+                android:id="@+id/materialCardViewKas"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
+                app:strokeWidth="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="165dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -183,9 +198,10 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView4"
+                android:id="@+id/materialCardViewProfie"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
+                app:strokeWidth="0dp"
                 android:layout_marginStart="165dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -261,6 +277,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />

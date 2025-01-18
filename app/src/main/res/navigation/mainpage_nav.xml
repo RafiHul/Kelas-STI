@@ -10,16 +10,12 @@
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home_page" >
         <action
-            android:id="@+id/action_homePageFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_homePageFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.stiproject.kelassti.fragment.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_homePageFragment"
-            app:destination="@id/homePageFragment" />
-    </fragment>
+        android:id="@+id/myProfileFragment"
+        android:name="com.stiproject.kelassti.fragment.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>
