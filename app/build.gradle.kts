@@ -74,4 +74,5 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.52")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
 }
