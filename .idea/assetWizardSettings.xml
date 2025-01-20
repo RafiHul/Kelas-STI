@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -18,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/attach_money/baseline_attach_money_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialsymbolsoutlined/home/outline_home_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="baseline_attach_money_24black" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/SVG/plus-file-svgrepo-com.svg" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="outline_home_24" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/SVG/account-svgrepo-com.svg" />
                           </map>
                         </option>
                       </PersistentState>

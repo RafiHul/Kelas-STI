@@ -3,12 +3,15 @@ package com.stiproject.kelassti
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.stiproject.kelassti.databinding.ActivityMainBinding
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +54,12 @@ class MainActivity : AppCompatActivity() {
                 //tidak ada error handling ketika jwt expired
             }
         }
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
+        val navController = navHostFragment.navController
+        val popupMenu = PopupMenu(this,null)
+        popupMenu.inflate(R.menu.bottom_nav_menu)
+        binding.navigationBottomMain.setupWithNavController(popupMenu.menu,navController)
     }
 
     override fun onDestroy() {

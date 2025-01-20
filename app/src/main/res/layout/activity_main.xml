@@ -27,6 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/navigationBottomMain"
             app:navGraph="@navigation/mainpage_nav" />
 
         <androidx.appcompat.widget.Toolbar
@@ -37,6 +38,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <me.ibrahimsn.lib.SmoothBottomBar
+            android:id="@+id/navigationBottomMain"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            app:cornerRadius="30dp"
+            app:backgroundColor="@color/dark_blue_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
