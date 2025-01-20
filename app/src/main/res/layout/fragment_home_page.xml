@@ -52,39 +52,42 @@
                     app:layout_constraintEnd_toEndOf="@+id/textView10"
                     app:layout_constraintStart_toStartOf="@+id/textView10" />
 
-                <com.google.android.material.card.MaterialCardView
+                <include
+                    layout="@layout/loading_view"
                     android:id="@+id/textViewUsernameHomePageLoading"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:backgroundTint="@color/LoadingColor"
-                    app:cardCornerRadius="6dp"
-                    app:strokeWidth="0dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textViewUsernameHomePage"
                     app:layout_constraintEnd_toEndOf="@+id/textViewUsernameHomePage"
                     app:layout_constraintStart_toStartOf="@+id/textViewUsernameHomePage"
                     app:layout_constraintTop_toTopOf="@+id/textViewUsernameHomePage" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/constraintLayoutMenuItemHomePage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/cardView"
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/cardView">
+
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
                 android:layout_marginEnd="165dp"
-                app:rippleColor="@color/black"
-                app:strokeWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="@color/black"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -121,10 +124,10 @@
                 android:layout_width="156dp"
                 android:layout_height="78dp"
                 android:layout_marginStart="165dp"
-                app:strokeWidth="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -160,12 +163,12 @@
                 android:id="@+id/materialCardViewKas"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
-                app:strokeWidth="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="165dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/materialCardView">
+                app:layout_constraintTop_toBottomOf="@id/materialCardView"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -201,12 +204,12 @@
                 android:id="@+id/materialCardViewProfie"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
-                app:strokeWidth="0dp"
                 android:layout_marginStart="165dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/materialCardView2">
+                app:layout_constraintTop_toBottomOf="@id/materialCardView2"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -248,8 +251,19 @@
             android:fontFamily="@font/inter"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintStart_toStartOf="@+id/constraintLayoutMenuItemHomePage"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutMenuItemHomePage" />
+
+        <ProgressBar
+            android:id="@+id/progressBarMenuItemHomePage"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayoutMenuItemHomePage"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayoutMenuItemHomePage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTasks"
@@ -257,7 +271,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayoutMenuItemHomePage"
             app:layout_constraintTop_toBottomOf="@id/textView15" />
 
         <TextView
@@ -269,7 +283,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayoutMenuItemHomePage"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewTasks" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -280,7 +294,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayoutMenuItemHomePage"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

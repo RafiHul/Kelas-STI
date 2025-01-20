@@ -5,4 +5,5 @@
     <color name="dark_blue_primary">#212938</color>
     <color name="pemasukan_kas">#22C55E</color>
     <color name="pengeluaran_kas">#B80D0D</color>
+    <color name="LoadingColor">#2BFFFFFF</color>
 </resources>

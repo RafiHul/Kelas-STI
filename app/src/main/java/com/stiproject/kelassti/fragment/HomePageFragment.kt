@@ -35,7 +35,13 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userViewModel.userData.observe(viewLifecycleOwner){
-            binding.textViewUsernameHomePage.text = getString(R.string.name_homepage,it.userData?.name ?: "null")
+            if (it.userData != null){
+                binding.textViewUsernameHomePageLoading.viewLoadingTransparant.visibility = View.GONE
+                binding.textViewUsernameHomePage.text = getString(R.string.name_homepage,it.userData.name)
+                binding.textViewUsernameHomePage.visibility = View.VISIBLE
+                binding.progressBarMenuItemHomePage.visibility = View.GONE
+                binding.constraintLayoutMenuItemHomePage.visibility = View.VISIBLE
+            }
         }
 
         val tasksAdapter = TasksAdapter(TempData.tasksTempItem)
@@ -49,7 +55,7 @@ class HomePageFragment : Fragment() {
             adapter = tasksAdapter
         }
 
-        binding.materialCardView3.setOnClickListener{
+        binding.materialCardViewKas.setOnClickListener{
             val intent = Intent(context,KasActivity::class.java)
             startActivity(intent)
         }
