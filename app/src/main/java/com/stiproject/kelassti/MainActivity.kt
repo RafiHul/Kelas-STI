@@ -2,7 +2,6 @@ package com.stiproject.kelassti
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,8 +10,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.stiproject.kelassti.databinding.ActivityMainBinding
+import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,21 +42,26 @@ class MainActivity : AppCompatActivity() {
         toggle.setHomeAsUpIndicator(R.drawable.baseline_attach_money_24)
 
         lifecycleScope.launch{
-            userViewModel.getUsersByJwt(application){
-                if (it == "401"){
-                    val intent = Intent(application, LogRegActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+            userViewModel.getUsersByJwt{
+                when (it) {
+                    is ApiResult.Failed -> {
+                        userViewModel.clearJwtToken(this@MainActivity)
+                        Toast.makeText(this@MainActivity, it.messageFailed, Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(application, LogRegActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                    is ApiResult.Success -> Toast.makeText(this@MainActivity, it.messageSuccess, Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(application, it, Toast.LENGTH_SHORT).show()
-                //tidak ada error handling ketika jwt expired
             }
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
         val navController = navHostFragment.navController
         val popupMenu = PopupMenu(this,null)
+
         popupMenu.inflate(R.menu.bottom_nav_menu)
         binding.navigationBottomMain.setupWithNavController(popupMenu.menu,navController)
     }

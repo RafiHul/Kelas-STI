@@ -16,7 +16,7 @@ class UserDataHolder @Inject constructor(){
         _userState.value = userState.value?.copy(userData = userDat)
     }
 
-    fun setJwtToken(jwtToken: String?){
+    fun setJwtToken(jwtToken: String){
         _userState.value = userState.value?.copy(jwtToken = jwtToken)
     }
 }

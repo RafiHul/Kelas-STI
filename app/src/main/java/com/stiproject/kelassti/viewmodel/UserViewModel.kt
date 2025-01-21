@@ -22,19 +22,19 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
     val userData = userState.userState
 
     fun userRegister(data: RegisterRequest, action: (ApiResult<String>) -> Unit){
-
         viewModelScope.launch{
+
             val response = repo.userRegister(data)
             val body = response.body()
             val errorBody = response.errorBody()
 
             if (!response.isSuccessful){
-                action(ApiResult.Failed(errorBody?.parseErrorMessageJsonToString() ?: "Failed To Connect"))
+                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
                 return@launch
             }
 
             if(body == null){
-                action(ApiResult.Failed("gagal register"))
+                action(ApiResult.Failed("Gagal Register"))
                 return@launch
             }
 
@@ -42,34 +42,53 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
         }
     }
 
-    fun userLogin(context: Context, data: LoginRequest, actionSuccessLogin: (String) -> Unit, actionFailedLogin: (String) -> Unit){
+    fun userLogin(context: Context, data: LoginRequest, action: (ApiResult<String>) -> Unit){
         viewModelScope.launch{
+
             val response = repo.userLogin(data)
             val body = response.body()
-            if (response.isSuccessful) {
-                body!!.data?.let {
-                    setJwtToken(context, it.accessToken)
-                    actionSuccessLogin(body.message)
-                } ?: actionFailedLogin(body.message)
-            } else {
-                actionFailedLogin(body?.message ?: "Failed To Connect")
+            val errorBody = response.errorBody()
+
+            if (!response.isSuccessful){
+                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
+                return@launch
             }
+
+            if (body == null || body.data == null){
+                action(ApiResult.Failed("Gagal Login"))
+                return@launch
+            }
+
+            setJwtToken(context, body.data.accessToken)
+            action(ApiResult.Success("Berhasil Login"))
         }
     }
 
-    fun getUsersByJwt(context: Context, action: (String) -> Unit){
+    fun getUsersByJwt(action: (ApiResult<String>) -> Unit){
         viewModelScope.launch{
+
             val jwttoken = getJwtBearer()
             val response = repo.getUsersByJwt(jwttoken)
             val body = response.body()
-            if (response.isSuccessful && body != null){
-                repo.userState.setUserData(body.data)
-                action("Selamat Datang ${body.data?.name}")
-            } else {
-                Log.d("getuserbyjwtviewmodel",response.message())
-                clearJwtToken(context)
-                action(response.code().toString())
+            val errorBody = response.errorBody()
+
+            if(response.code() == 401){
+                action(ApiResult.Failed("Token Expired, Harap Login Ulang!"))
+                return@launch
             }
+
+            if(!response.isSuccessful){
+                action(ApiResult.Failed("${errorBody.parseErrorMessageJsonToString()}, Harap Login Ulang!"))
+                return@launch
+            }
+
+            if(body == null || body.data == null){
+                action(ApiResult.Failed("Gagal Mendapatkan Data User, Harap Login Ulang!"))
+                return@launch
+            }
+
+            repo.userState.setUserData(body.data)
+            action(ApiResult.Success("Selamat Datang ${body.data.name}"))
         }
     }
 
@@ -78,11 +97,11 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
         DataStoreUtil.saveLoginToken(context,token)
     }
 
-    suspend fun clearJwtToken(context: Context){
-        DataStoreUtil.clearLoginInfo(context)
+    fun clearJwtToken(context: Context){
+        viewModelScope.launch{
+            DataStoreUtil.clearLoginInfo(context)
+        }
     }
 
     fun getJwtBearer(): String = "Bearer ${userState.userState.value?.jwtToken}"
-
-
 }

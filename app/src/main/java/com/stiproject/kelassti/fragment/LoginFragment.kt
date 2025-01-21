@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentLoginBinding
 import com.stiproject.kelassti.model.request.LoginRequest
+import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import kotlin.getValue
 
@@ -43,19 +44,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val username = binding.editTextTextUsernameLogin.text.toString()
             val password = binding.editTextTextPasswordLogin.text.toString()
 
-            if (username.isNotEmpty() && password.isNotEmpty()){
-                try {
-                    val usernamenum = username.toInt()
-                    userViewModel.userLogin(requireContext(),LoginRequest(usernamenum,password),
-                        actionSuccessLogin = {
-                            Toast.makeText(context, "tes", Toast.LENGTH_SHORT).show()
-                        },
-                        actionFailedLogin = {
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        })
-                } catch (e: NumberFormatException){
-                    Toast.makeText(context, "Masukkan Angka NIM", Toast.LENGTH_SHORT).show()
+            if (username.isEmpty() || password.isEmpty()){
+                Toast.makeText(context, "Masukkan username dan password dengan benar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            try {
+                val usernamenum = username.toInt()
+                userViewModel.userLogin(requireContext(),LoginRequest(usernamenum,password)){
+                    handleToastApiResult(context, it)
                 }
+            } catch (e: NumberFormatException){
+                Toast.makeText(context, "Masukkan Angka NIM", Toast.LENGTH_SHORT).show()
             }
         }
     }

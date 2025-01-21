@@ -14,6 +14,10 @@ fun handleToastApiResult(context: Context?, result: ApiResult<String>){
 }
 
 fun ResponseBody?.parseErrorMessageJsonToString(): String {
-    val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)
-    return errorResponse.message
+    return try {
+        val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)
+        errorResponse.message
+    } catch (e: Exception){
+        "Terjadi Kesalahan Saat Memproses Response: ${e.message}" // TODO: mungkin error nya akan terkirim ke server ?
+    }
 }
