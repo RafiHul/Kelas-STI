@@ -1,7 +1,6 @@
 package com.stiproject.kelassti.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentRegisterBinding
 import com.stiproject.kelassti.model.request.RegisterRequest
+import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import kotlin.getValue
 
@@ -45,18 +45,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             val usernameByNim = binding.editTextTextUsernameRegister.text.toString()
             val password = binding.editTextTextPasswordRegister.text.toString()
 
-            if (usernameByNim.isNotEmpty() && password.isNotEmpty()){
-                try {
-                    val usernum = usernameByNim.toInt()
-                    userViewModel.userRegister(RegisterRequest(usernum, password)) {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: NumberFormatException){
-                    Toast.makeText(context, "masukkan angka NIM dengan benar", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(context, "Harap isi", Toast.LENGTH_SHORT).show()
+            if (usernameByNim.isEmpty() || password.isEmpty()){
+                Toast.makeText(context, "Harap isi dengan benar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            try {
+                val usernum = usernameByNim.toInt()
+                userViewModel.userRegister(RegisterRequest(usernum, password)) {
+                    handleToastApiResult(context, it)
+                }
+            } catch (e: NumberFormatException){
+                Toast.makeText(context, "masukkan angka NIM dengan benar", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

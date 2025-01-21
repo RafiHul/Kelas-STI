@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.model.request.LoginRequest
 import com.stiproject.kelassti.model.request.RegisterRequest
 import com.stiproject.kelassti.repository.UserRepository
+import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.DataStoreUtil
+import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,24 +18,27 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(app: Application, val repo: UserRepository): AndroidViewModel(app) {
 
-    val userState = repo.userState
+    private val userState = repo.userState
     val userData = userState.userState
 
-    fun userRegister(data: RegisterRequest, action: (String) -> Unit){
+    fun userRegister(data: RegisterRequest, action: (ApiResult<String>) -> Unit){
+
         viewModelScope.launch{
             val response = repo.userRegister(data)
             val body = response.body()
+            val errorBody = response.errorBody()
 
-            if (response.code() == 409){ //conflict
-                action("username telah di gunakan")
+            if (!response.isSuccessful){
+                action(ApiResult.Failed(errorBody?.parseErrorMessageJsonToString() ?: "Failed To Connect"))
                 return@launch
             }
 
-            if (response.isSuccessful){
-                action(body?.message.toString())
-            } else {
-                action(body?.message ?: response.message())
+            if(body == null){
+                action(ApiResult.Failed("gagal register"))
+                return@launch
             }
+
+            action(ApiResult.Success(body.message))
         }
     }
 
