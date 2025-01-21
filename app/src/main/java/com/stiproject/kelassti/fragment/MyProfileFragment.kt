@@ -47,7 +47,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 }
                 binding.includeNimSection.apply {
                     textViewLabelProfileInfo.text = "NIM"
-                    textViewValueProfileInfo.text = getString(R.string.name_homepage,userDat.usernameByNIM.toString())
+                    textViewValueProfileInfo.text = userDat.usernameByNIM.toString()
                 }
                 binding.includeSemesterSection.apply {
                     textViewLabelProfileInfo.text = "Semester"

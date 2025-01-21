@@ -29,8 +29,11 @@ class KasActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val myToolbar = binding.toolbarKas
-        myToolbar.title
         setSupportActionBar(myToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.imageViewBackKasActivity.setOnClickListener{
+            finish()
+        }
     }
 }

@@ -26,6 +26,16 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/gradient_kas">
 
+                <include
+                    layout="@layout/loading_view"
+                    android:id="@+id/textViewKasTotalLoading"
+                    android:layout_width="345dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewKasTotal"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewKasTotal"
+                    app:layout_constraintStart_toStartOf="@+id/textViewKasTotal"
+                    app:layout_constraintTop_toTopOf="@+id/textViewKasTotal" />
+
                 <TextView
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
@@ -48,6 +58,7 @@
                     android:text="@string/rupiah_format"
                     android:textColor="@color/white"
                     android:textSize="32sp"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="@+id/textView19"
                     app:layout_constraintTop_toBottomOf="@+id/textView19" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -80,6 +91,16 @@
                     android:background="@drawable/gradient_main">
 
 
+                    <include
+                        layout="@layout/loading_view"
+                        android:id="@+id/textViewPemasukanLoading"
+                        android:layout_width="85dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewPemasukkan"
+                        app:layout_constraintEnd_toEndOf="@+id/textViewPemasukkan"
+                        app:layout_constraintStart_toStartOf="@+id/textViewPemasukkan"
+                        app:layout_constraintTop_toTopOf="@+id/textViewPemasukkan" />
+
                     <ImageView
                         android:id="@+id/imageView6"
                         android:layout_width="40dp"
@@ -108,6 +129,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_semibold"
                         android:text="@string/rupiah_format"
+                        android:visibility="invisible"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -131,6 +153,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/gradient_main">
+
+                    <include
+                        layout="@layout/loading_view"
+                        android:id="@+id/textViewPengeluaranKasLoading"
+                        android:layout_width="85dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewPengeluaranKas"
+                        app:layout_constraintEnd_toEndOf="@+id/textViewPengeluaranKas"
+                        app:layout_constraintStart_toStartOf="@+id/textViewPengeluaranKas"
+                        app:layout_constraintTop_toTopOf="@+id/textViewPengeluaranKas" />
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -162,6 +194,7 @@
                         android:text="@string/rupiah_format"
                         android:textColor="@color/white"
                         android:textSize="12sp"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toEndOf="@+id/imageView7"
                         app:layout_constraintTop_toBottomOf="@+id/textView23" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
