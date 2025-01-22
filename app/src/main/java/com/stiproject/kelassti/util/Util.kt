@@ -8,8 +8,8 @@ import okhttp3.ResponseBody
 
 fun handleToastApiResult(context: Context?, result: ApiResult<String>){
     when(result){
-        is ApiResult.Success -> Toast.makeText(context, result.messageSuccess, Toast.LENGTH_SHORT).show()
         is ApiResult.Failed -> Toast.makeText(context, result.messageFailed, Toast.LENGTH_SHORT).show()
+        is ApiResult.Success -> Toast.makeText(context, result.messageSuccess, Toast.LENGTH_SHORT).show()
     }
 }
 

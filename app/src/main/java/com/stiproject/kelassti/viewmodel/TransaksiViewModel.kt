@@ -1,6 +1,5 @@
 package com.stiproject.kelassti.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +7,8 @@ import com.stiproject.kelassti.model.request.KasRequest
 import com.stiproject.kelassti.model.response.transaksi.TransaksiData
 import com.stiproject.kelassti.model.response.transaksi.TransaksiDataArray
 import com.stiproject.kelassti.repository.TransaksiRepository
+import com.stiproject.kelassti.util.ApiResult
+import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,76 +27,89 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
     private val _totalPengeluaranKas: MutableLiveData<Long> = MutableLiveData()
     val totalPengeluaranKas = _totalPengeluaranKas
 
-    fun getTransaksiKas(action: (String) -> Unit = {}){
+    fun getTransaksiKas(action: (ApiResult<String>) -> Unit = {}){
         viewModelScope.launch{
+
             val response = repo.getAllTransaksi()
-            if(response.isSuccessful){
-                val body = response.body()
-                val dataList = body?.data
+            val body = response.body()
+            val errorBody = response.errorBody()
 
-                transaksiKas.value = body?.data
-
-                val pemasukanKas = setTotal(dataList,"pemasukan")
-                val pengeluaranKas = setTotal(dataList,"pengeluaran")
-                val totalKas = pemasukanKas!! - pengeluaranKas!!
-
-                totalPemasukanKas.value = pemasukanKas
-                totalPengeluaranKas.value = pengeluaranKas
-                totalTransaksiKas.value = totalKas
-
-                action(body?.message.toString())
-            } else {
-                action(response.code().toString())
+            if(!response.isSuccessful){
+                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
+                return@launch
             }
+
+            if (body == null){
+                action(ApiResult.Failed("Gagal Mendapatkan data kas"))
+                return@launch
+            }
+
+            val dataList = body.data
+            transaksiKas.postValue(body.data)
+
+            val pemasukanKas = setTotal(dataList,"pemasukan")
+            val pengeluaranKas = setTotal(dataList,"pengeluaran")
+            val totalKas = pemasukanKas!! - pengeluaranKas!!
+
+            totalPemasukanKas.postValue(pemasukanKas)
+            totalPengeluaranKas.postValue(pengeluaranKas)
+            totalTransaksiKas.postValue(totalKas)
         }
     }
 
-    fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (String) -> Unit){
+    fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
         // TODO: ini belum di tambahkan kalo misalnya bukan admin
         viewModelScope.launch{
+
             val response = repo.postTransaksi(jwtToken,kasRequest)
             val body = response.body()
+            val errorBody = response.errorBody()
 
-            if(response.code() == 404){ // TODO: ini ubah jangan di if dari response code nya
-                action("NIM tidak ditemukan!")
+            if(!response.isSuccessful){
+                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
                 return@launch
             }
 
-            if (response.isSuccessful && body != null){
-                getTransaksiKas()
-                action(body.message)
-            } else {
-                action(response.message())
-            }
-        }
-    }
-
-    fun getTransaksiById(id: Int, action: (TransaksiData?) -> Unit) {
-        viewModelScope.launch {
-            val response = repo.getTransaksiById(id.toString())
-            val body = response.body()
-
-            if (!response.isSuccessful || body == null) {
-                action(null)
-                return@launch
-            }
-
-            action(body.data)
-        }
-    }
-
-    fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (String) -> Unit){
-        viewModelScope.launch{
-            val response = repo.updateTransaksiById(id.toString(), jwtToken, kasRequest)
-            val body = response.body()
-
-            if(!response.isSuccessful || body == null){
-                action("Gagal update data")
+            if (body == null){
+                action(ApiResult.Failed("Gagal Menambahkan Data"))
                 return@launch
             }
 
             getTransaksiKas()
-            action(body.message.toString())
+            action(ApiResult.Success(body.message))
+        }
+    }
+
+    fun getTransaksiById(id: Int, action: (ApiResult<TransaksiData?>) -> Unit) {
+        viewModelScope.launch {
+
+            val response = repo.getTransaksiById(id.toString())
+            val body = response.body()
+
+            if (!response.isSuccessful || body == null) {
+                action(ApiResult.Failed(null)) // TODO: ini bisa pake body.message (string)
+                return@launch
+            }
+
+            action(ApiResult.Success(body.data))
+        }
+    }
+
+    fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
+        // TODO: ambigu dari api kalo nim_mahasiswa di ganti (internal server error)
+        viewModelScope.launch{
+
+            val response = repo.updateTransaksiById(id.toString(), jwtToken, kasRequest)
+            val body = response.body()
+            val errorBody = response.errorBody()
+
+            if(!response.isSuccessful){
+                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
+                return@launch
+            }
+
+            getTransaksiKas()
+            action(ApiResult.Success(body?.message.toString()))
         }
     }
 
@@ -113,7 +127,6 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
             return result.toLong()
         }
-
         return 0
     }
 

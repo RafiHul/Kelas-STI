@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.adapter.TransaksiAdapter
 import com.stiproject.kelassti.databinding.FragmentKasBinding
+import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.TransaksiViewModel
 import com.stiproject.kelassti.viewmodel.UserViewModel
 
@@ -35,7 +35,7 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
         super.onViewCreated(view, savedInstanceState)
 
         transaksiViewModel.getTransaksiKas {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            handleToastApiResult(context,it)
         }
 
         transaksiViewModel.totalTransaksiKas.observe(viewLifecycleOwner){

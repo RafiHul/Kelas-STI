@@ -14,6 +14,8 @@ import androidx.fragment.app.activityViewModels
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.model.request.KasRequest
+import com.stiproject.kelassti.util.ApiResult
+import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.TransaksiViewModel
 import com.stiproject.kelassti.viewmodel.UserViewModel
 import kotlin.toString
@@ -69,29 +71,33 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         // TODO: ini belum di tambahkan kalo misalnya bukan admin
         kasId?.let { kasId ->
             binding.textViewTambahkanKas.text = "Edit"
-            transaksiViewModel.getTransaksiById(kasId){ data ->
-                if (data != null){
 
-                    bindingNimMahasiswaKasInput.setText(data.NIM_mahasiswa.toString())
-                    bindingDeskripsiKasInput.setText(data.deskripsi)
-                    bindingNominalKasInput.setText(data.nominal.toString())
+            transaksiViewModel.getTransaksiById(kasId){ result ->
+                when(result){
+                    is ApiResult.Failed -> {
+                        Toast.makeText(context, "Terjadi Kesalahan saat mengambil data", Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    }
+                    is ApiResult.Success -> {
+                        val data = result.messageSuccess!!
+                        bindingNimMahasiswaKasInput.setText(data.NIM_mahasiswa.toString())
+                        bindingDeskripsiKasInput.setText(data.deskripsi)
+                        bindingNominalKasInput.setText(data.nominal.toString())
 
-                    binding.textViewTambahkanKas.setOnClickListener{
-                        val kasRequest = getKasRequest()
+                        binding.textViewTambahkanKas.setOnClickListener {
+                            val kasRequest = getKasRequest()
 
-                        if (kasRequest == null){
-                            Toast.makeText(context, "Tidak boleh ada yang kosong", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
+                            if (kasRequest == null) {
+                                Toast.makeText(context, "Tidak boleh ada yang kosong", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
 
-                        transaksiViewModel.updateTransaksiById(data.id,userJwtBearer,kasRequest){
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                            dismiss()
+                            transaksiViewModel.updateTransaksiById(data.id, userJwtBearer, kasRequest) {
+                                handleToastApiResult(context,it)
+                                dismiss()
+                            }
                         }
                     }
-                } else {
-                    Toast.makeText(context, "Terjadi Kesalahan saat mengambil data", Toast.LENGTH_SHORT).show()
-                    dismiss()
                 }
             }
         } ?: run {
@@ -105,10 +111,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                 }
 
                 transaksiViewModel.addTransaksiKas(userJwtBearer, kasRequest) {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                    if (it == "Berhasil membuat data transaksi!") { // TODO: ini juga jangan gini
-                        dismiss()
-                    }
+                    handleToastApiResult(context, it)
+                    dismiss()
                 }
             }
         }
