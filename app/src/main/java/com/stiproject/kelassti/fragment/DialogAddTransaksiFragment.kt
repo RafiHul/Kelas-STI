@@ -47,6 +47,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val userData = userViewModel.userData.value
         val userJwtBearer = userViewModel.getJwtBearer()
         val args = arguments
         kasId = args?.getInt("kasId")
@@ -80,11 +81,21 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                     }
                     is ApiResult.Success -> {
                         val data = result.messageSuccess!!
+
+                        binding.imageView.visibility = View.GONE
+                        bindingNimMahasiswaKasInput.visibility = View.GONE
+
                         bindingNimMahasiswaKasInput.setText(data.NIM_mahasiswa.toString())
                         bindingDeskripsiKasInput.setText(data.deskripsi)
                         bindingNominalKasInput.setText(data.nominal.toString())
 
                         binding.textViewTambahkanKas.setOnClickListener {
+
+                            if(userData?.userData?.role != "admin"){
+                                Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+
                             val kasRequest = getKasRequest()
 
                             if (kasRequest == null) {
@@ -103,6 +114,12 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         } ?: run {
             binding.textViewTambahkanKas.text = "Simpan"
             binding.textViewTambahkanKas.setOnClickListener {
+
+                if(userData?.userData?.role != "admin"){
+                    Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val kasRequest = getKasRequest()
 
                 if (kasRequest == null){
@@ -120,6 +137,9 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         binding.textViewBatalKas.setOnClickListener{
             dismiss()
         }
+
+
+
 
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog?.window?.setIcon(R.drawable.baseline_dehaze_24)

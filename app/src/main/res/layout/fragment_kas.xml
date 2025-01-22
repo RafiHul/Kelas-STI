@@ -30,11 +30,9 @@
                     layout="@layout/loading_view"
                     android:id="@+id/textViewKasTotalLoading"
                     android:layout_width="345dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewKasTotal"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewKasTotal"
-                    app:layout_constraintStart_toStartOf="@+id/textViewKasTotal"
-                    app:layout_constraintTop_toTopOf="@+id/textViewKasTotal" />
+                    android:layout_height="50dp"
+                    app:layout_constraintStart_toStartOf="@+id/textView19"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
                 <TextView
                     android:id="@+id/textView19"
@@ -220,7 +218,6 @@
                 android:layout_height="24dp"
                 android:background="#CFBDFE"
                 android:src="@drawable/baseline_add_24"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/textView25"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintTop_toTopOf="@+id/textView25" />

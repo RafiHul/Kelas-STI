@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.adapter.TransaksiAdapter
 import com.stiproject.kelassti.databinding.FragmentKasBinding
+import com.stiproject.kelassti.fragment.dialog.DialogAuthorisasiFragment
 import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.TransaksiViewModel
 import com.stiproject.kelassti.viewmodel.UserViewModel
@@ -60,11 +61,12 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
             DialogAddTransaksiFragment.newInstance(it).show(parentFragmentManager,"Transaksi Edit")
         }
 
-        userViewModel.userData.observe(viewLifecycleOwner){
-            if(it.userData?.role == "admin"){
-                binding.imageButtonAddTransaksi.visibility = View.VISIBLE
-                binding.imageButtonAddTransaksi.setOnClickListener{
-                    DialogAddTransaksiFragment().show(parentFragmentManager,"Transaksi New")
+        userViewModel.userData.observe(viewLifecycleOwner){ user ->
+            binding.imageButtonAddTransaksi.setOnClickListener{
+                if(user.userData?.role != "admin"){
+                    DialogAuthorisasiFragment().show(parentFragmentManager,"auth")
+                } else {
+                    DialogAddTransaksiFragment().show(parentFragmentManager, "Transaksi New")
                 }
             }
         }
