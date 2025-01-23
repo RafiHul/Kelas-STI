@@ -69,7 +69,6 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         }
 
 
-        // TODO: ini belum di tambahkan kalo misalnya bukan admin
         kasId?.let { kasId ->
             binding.textViewTambahkanKas.text = "Edit"
 

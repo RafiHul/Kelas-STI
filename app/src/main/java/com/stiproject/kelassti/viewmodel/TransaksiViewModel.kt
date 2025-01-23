@@ -58,7 +58,6 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
     }
 
     fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
-        // TODO: ini belum di tambahkan kalo misalnya bukan admin
         viewModelScope.launch{
 
             val response = repo.postTransaksi(jwtToken,kasRequest)
@@ -96,7 +95,6 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
     }
 
     fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
-        // TODO: ambigu dari api kalo nim_mahasiswa di ganti (internal server error)
         viewModelScope.launch{
 
             val response = repo.updateTransaksiById(id.toString(), jwtToken, kasRequest)

@@ -32,7 +32,6 @@ class DialogAuthorisasiFragment : DialogFragment(R.layout.fragment_dialog_author
             dismiss()
         }
 
-        dialog?.window?.attributes?.windowAnimations = R.style.DialogAlertAnimation
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
