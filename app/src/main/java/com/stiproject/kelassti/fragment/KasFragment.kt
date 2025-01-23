@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.adapter.TransaksiAdapter
@@ -14,6 +15,8 @@ import com.stiproject.kelassti.fragment.dialog.DialogAuthorisasiFragment
 import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.TransaksiViewModel
 import com.stiproject.kelassti.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class KasFragment : Fragment(R.layout.fragment_kas) {
 
@@ -77,13 +80,15 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
         }
 
         activity?.let {
-            transaksiViewModel.transaksiKas.observe(viewLifecycleOwner){
-                transaksiAdapter.differ.submitList(it)
+            lifecycleScope.launch {
+                transaksiViewModel.getTransaksiPage.collectLatest {
+                    transaksiAdapter.submitData(it)
+                }
             }
+//            transaksiViewModel.transaksiKas.observe(viewLifecycleOwner){
+//                transaksiAdapter.differ.submitList(it)
+//            }
         }
-
-
-
     }
 
     override fun onDestroy() {

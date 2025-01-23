@@ -3,6 +3,7 @@ package com.stiproject.kelassti.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.stiproject.kelassti.model.request.KasRequest
 import com.stiproject.kelassti.model.response.transaksi.TransaksiData
 import com.stiproject.kelassti.model.response.transaksi.TransaksiDataArray
@@ -26,6 +27,9 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
 
     private val _totalPengeluaranKas: MutableLiveData<Long> = MutableLiveData()
     val totalPengeluaranKas = _totalPengeluaranKas
+
+    val getTransaksiPage = repo.getTransaksiPageFlow()
+        .cachedIn(viewModelScope)
 
     fun getTransaksiKas(action: (ApiResult<String>) -> Unit = {}){
         viewModelScope.launch{

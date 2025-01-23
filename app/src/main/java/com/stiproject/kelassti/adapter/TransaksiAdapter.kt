@@ -3,14 +3,31 @@ package com.stiproject.kelassti.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.RecyclerviewitemTransaksikasBinding
 import com.stiproject.kelassti.model.response.transaksi.TransaksiData
 
-class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit): RecyclerView.Adapter<TransaksiAdapter.MyViewHolder>() {
+class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit):
+    PagingDataAdapter<TransaksiData, TransaksiAdapter.MyViewHolder>(
+        object : DiffUtil.ItemCallback<TransaksiData>() {
+            override fun areItemsTheSame(
+                oldItem: TransaksiData,
+                newItem: TransaksiData
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: TransaksiData,
+                newItem: TransaksiData
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    ) {
     inner class MyViewHolder(val binding: RecyclerviewitemTransaksikasBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: TransaksiData){
 
@@ -32,24 +49,6 @@ class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit)
         }
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<TransaksiData>() {
-        override fun areItemsTheSame(
-            oldItem: TransaksiData,
-            newItem: TransaksiData
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: TransaksiData,
-            newItem: TransaksiData
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
-
-    val differ = AsyncListDiffer(this@TransaksiAdapter,differCallback)
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -61,15 +60,11 @@ class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit)
         )
     }
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
-
     override fun onBindViewHolder(
         holder: MyViewHolder,
         position: Int
     ) {
-        val currentItem = differ.currentList[position]
-        holder.bind(currentItem)
+        val currentItem = getItem(position)
+        holder.bind(currentItem!!)
     }
 }

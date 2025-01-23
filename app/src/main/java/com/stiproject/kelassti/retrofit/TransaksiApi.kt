@@ -10,10 +10,18 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TransaksiApi {
     @GET("/transaksi")
     suspend fun getTransaksi(): Response<TransaksiDataResponse>
+
+
+    @GET("/transaksi")
+    suspend fun getTransaksiPage(
+        @Query("page") page: String,
+        @Query("size") size: String
+    ): Response<TransaksiDataResponse>
 
     @POST("/transaksi")
     suspend fun postTransaksi(

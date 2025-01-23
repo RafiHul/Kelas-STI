@@ -75,4 +75,5 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
+    implementation("androidx.paging:paging-runtime:3.3.2")
 }
