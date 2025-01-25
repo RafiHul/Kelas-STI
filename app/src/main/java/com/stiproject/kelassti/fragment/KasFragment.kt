@@ -82,7 +82,7 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
 
         activity?.let {
             lifecycleScope.launch {
-                transaksiViewModel.getTransaksiPage().collectLatest {
+                transaksiViewModel.getTransaksiPage.collectLatest {
                     transaksiAdapter.submitData(it)
                 }
             }

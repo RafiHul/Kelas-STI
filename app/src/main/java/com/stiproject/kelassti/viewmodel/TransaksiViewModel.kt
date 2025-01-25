@@ -11,9 +11,11 @@ import com.stiproject.kelassti.repository.TransaksiRepository
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
 class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): ViewModel() {
     private val _transaksiKas: MutableLiveData<TransaksiDataArray> = MutableLiveData()
@@ -27,6 +29,18 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
 
     private val _totalPengeluaranKas: MutableLiveData<Long> = MutableLiveData()
     val totalPengeluaranKas = _totalPengeluaranKas
+
+    val _refreshTrigger = MutableStateFlow(true)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val getTransaksiPage = _refreshTrigger
+        .flatMapLatest { repo.getTransaksiPage() }
+        .cachedIn(viewModelScope)
+
+    fun refreshTriggered(){
+        _refreshTrigger.value = false
+        _refreshTrigger.value = true
+    }
 
     fun getTransaksi(action: (ApiResult<String>) -> Unit = {}){
         viewModelScope.launch{
@@ -58,9 +72,6 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
         }
     }
 
-    fun getTransaksiPage() = repo.getTransaksiPage()
-        .cachedIn(viewModelScope)
-
     fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
         viewModelScope.launch{
 
@@ -79,6 +90,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
 
             getTransaksi()
+            refreshTriggered()
             action(ApiResult.Success(body.message))
         }
     }
@@ -111,6 +123,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
 
             getTransaksi()
+            refreshTriggered()
             action(ApiResult.Success(body?.message.toString()))
         }
     }
@@ -133,3 +146,4 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
     }
 
 }
+
