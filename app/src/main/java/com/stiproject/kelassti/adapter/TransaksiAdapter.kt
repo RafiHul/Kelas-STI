@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.RecyclerviewitemTransaksikasBinding
 import com.stiproject.kelassti.model.response.transaksi.TransaksiData
+import com.stiproject.kelassti.util.convertToRupiahFormat
 
 class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit):
     PagingDataAdapter<TransaksiData, TransaksiAdapter.MyViewHolder>(
@@ -37,10 +38,10 @@ class TransaksiAdapter(val context: Context, val actionClickCard: (Int) -> Unit)
 
             if(currentItem.type == "pemasukan"){
                 binding.textViewPemasukanAtauPengeluaranKas.setTextColor(context.getColor(R.color.pemasukan_kas))
-                binding.textViewPemasukanAtauPengeluaranKas.text = context.getString(R.string.rupiah_pemasukan_kas,currentItem.nominal.toString())
+                binding.textViewPemasukanAtauPengeluaranKas.text = context.getString(R.string.rupiah_pemasukan_kas,currentItem.nominal.convertToRupiahFormat())
             } else {
                 binding.textViewPemasukanAtauPengeluaranKas.setTextColor(context.getColor(R.color.pengeluaran_kas))
-                binding.textViewPemasukanAtauPengeluaranKas.text = context.getString(R.string.rupiah_pengeluaran_kas,currentItem.nominal.toString())
+                binding.textViewPemasukanAtauPengeluaranKas.text = context.getString(R.string.rupiah_pengeluaran_kas,currentItem.nominal.convertToRupiahFormat())
             }
 
             binding.root.setOnClickListener{

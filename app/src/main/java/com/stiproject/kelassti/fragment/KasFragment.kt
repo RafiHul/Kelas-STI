@@ -12,6 +12,7 @@ import com.stiproject.kelassti.R
 import com.stiproject.kelassti.adapter.TransaksiAdapter
 import com.stiproject.kelassti.databinding.FragmentKasBinding
 import com.stiproject.kelassti.fragment.dialog.DialogAuthorisasiFragment
+import com.stiproject.kelassti.util.convertToRupiahFormat
 import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.viewmodel.TransaksiViewModel
 import com.stiproject.kelassti.viewmodel.UserViewModel
@@ -38,24 +39,24 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transaksiViewModel.getTransaksiKas {
+        transaksiViewModel.getTransaksi {
             handleToastApiResult(context,it)
         }
 
         transaksiViewModel.totalTransaksiKas.observe(viewLifecycleOwner){
-            binding.textViewKasTotal.text = getString(R.string.rupiah_format,it.toString())
+            binding.textViewKasTotal.text = getString(R.string.rupiah_format,it.convertToRupiahFormat())
             binding.textViewKasTotalLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewKasTotal.visibility = View.VISIBLE
         }
 
         transaksiViewModel.totalPemasukanKas.observe(viewLifecycleOwner){
-            binding.textViewPemasukkan.text = getString(R.string.rupiah_pemasukan_kas,it.toString())
+            binding.textViewPemasukkan.text = getString(R.string.rupiah_pemasukan_kas,it.convertToRupiahFormat())
             binding.textViewPemasukanLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewPemasukkan.visibility = View.VISIBLE
         }
 
         transaksiViewModel.totalPengeluaranKas.observe(viewLifecycleOwner){
-            binding.textViewPengeluaranKas.text = getString(R.string.rupiah_pengeluaran_kas,it.toString())
+            binding.textViewPengeluaranKas.text = getString(R.string.rupiah_pengeluaran_kas,it.convertToRupiahFormat())
             binding.textViewPengeluaranKasLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewPengeluaranKas.visibility = View.VISIBLE
         }
@@ -81,13 +82,10 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
 
         activity?.let {
             lifecycleScope.launch {
-                transaksiViewModel.getTransaksiPage.collectLatest {
+                transaksiViewModel.getTransaksiPage().collectLatest {
                     transaksiAdapter.submitData(it)
                 }
             }
-//            transaksiViewModel.transaksiKas.observe(viewLifecycleOwner){
-//                transaksiAdapter.differ.submitList(it)
-//            }
         }
     }
 

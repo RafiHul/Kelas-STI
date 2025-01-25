@@ -13,6 +13,27 @@ fun handleToastApiResult(context: Context?, result: ApiResult<String>){
     }
 }
 
+fun Long.convertToRupiahFormat(): String {
+
+    val x = this.toString().reversed()
+    val size = x.length
+    val thumb = mutableListOf<String>()
+
+    if (size < 4){
+        return this.toString()
+    }
+
+    for (i in 0..<size){
+        if (i % 3 == 0){
+            thumb.add(".")
+        }
+
+        thumb.add(x[i].toString())
+    }
+
+    return thumb.joinToString("").reversed().dropLast(1)
+}
+
 fun ResponseBody?.parseErrorMessageJsonToString(): String {
     return try {
         val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)

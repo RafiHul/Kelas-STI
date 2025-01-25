@@ -28,10 +28,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
     private val _totalPengeluaranKas: MutableLiveData<Long> = MutableLiveData()
     val totalPengeluaranKas = _totalPengeluaranKas
 
-    val getTransaksiPage = repo.getTransaksiPageFlow()
-        .cachedIn(viewModelScope)
-
-    fun getTransaksiKas(action: (ApiResult<String>) -> Unit = {}){
+    fun getTransaksi(action: (ApiResult<String>) -> Unit = {}){
         viewModelScope.launch{
 
             val response = repo.getAllTransaksi()
@@ -49,17 +46,20 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
 
             val dataList = body.data
-            transaksiKas.postValue(body.data)
+            _transaksiKas.postValue(body.data)
 
             val pemasukanKas = setTotal(dataList,"pemasukan")
             val pengeluaranKas = setTotal(dataList,"pengeluaran")
             val totalKas = pemasukanKas!! - pengeluaranKas!!
 
-            totalPemasukanKas.postValue(pemasukanKas)
-            totalPengeluaranKas.postValue(pengeluaranKas)
-            totalTransaksiKas.postValue(totalKas)
+            _totalPemasukanKas.postValue(pemasukanKas)
+            _totalPengeluaranKas.postValue(pengeluaranKas)
+            _totalTransaksiKas.postValue(totalKas)
         }
     }
+
+    fun getTransaksiPage() = repo.getTransaksiPage()
+        .cachedIn(viewModelScope)
 
     fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
         viewModelScope.launch{
@@ -78,7 +78,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
                 return@launch
             }
 
-            getTransaksiKas()
+            getTransaksi()
             action(ApiResult.Success(body.message))
         }
     }
@@ -110,7 +110,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
                 return@launch
             }
 
-            getTransaksiKas()
+            getTransaksi()
             action(ApiResult.Success(body?.message.toString()))
         }
     }

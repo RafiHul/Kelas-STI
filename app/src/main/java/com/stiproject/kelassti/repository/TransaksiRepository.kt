@@ -22,7 +22,7 @@ class TransaksiRepository @Inject constructor() {
         return transaksiService.getTransaksi()
     }
 
-    fun getTransaksiPageFlow(): Flow<PagingData<TransaksiData>> {
+    fun getTransaksiPage(): Flow<PagingData<TransaksiData>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
