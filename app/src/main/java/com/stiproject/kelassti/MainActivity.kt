@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.stiproject.kelassti.databinding.ActivityMainBinding
 import com.stiproject.kelassti.util.ApiResult
-import com.stiproject.kelassti.viewmodel.UserViewModel
+import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

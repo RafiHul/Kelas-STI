@@ -5,7 +5,7 @@
     android:layout_width="376dp"
     android:layout_height="137dp"
     app:cardCornerRadius="8dp"
-    tools:context=".fragment.dialog.DialogAuthorisasiFragment">
+    tools:context=".presentation.dialog.DialogAuthorisasiFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

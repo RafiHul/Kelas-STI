@@ -6,7 +6,7 @@
     android:layout_height="324dp"
     app:cardCornerRadius="28dp"
     android:backgroundTint="#E5E7EB"
-    tools:context=".fragment.DialogAddTransaksiFragment">
+    tools:context=".presentation.dialog.DialogAddTransaksiFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

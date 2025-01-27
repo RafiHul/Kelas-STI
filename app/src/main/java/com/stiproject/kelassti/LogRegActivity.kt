@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.stiproject.kelassti.databinding.ActivityLogRegBinding
 import com.stiproject.kelassti.util.DataStoreUtil
-import com.stiproject.kelassti.viewmodel.UserViewModel
+import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

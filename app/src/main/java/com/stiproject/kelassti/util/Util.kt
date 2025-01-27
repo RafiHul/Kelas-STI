@@ -3,7 +3,7 @@ package com.stiproject.kelassti.util
 import android.content.Context
 import android.widget.Toast
 import com.google.gson.Gson
-import com.stiproject.kelassti.model.response.ApiErrorResponse
+import com.stiproject.kelassti.data.model.response.ApiErrorResponse
 import okhttp3.ResponseBody
 
 fun handleToastApiResult(context: Context?, result: ApiResult<String>){

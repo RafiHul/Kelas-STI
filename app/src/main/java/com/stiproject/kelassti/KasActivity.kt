@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.stiproject.kelassti.databinding.ActivityKasBinding
-import com.stiproject.kelassti.viewmodel.TransaksiViewModel
-import com.stiproject.kelassti.viewmodel.UserViewModel
+import com.stiproject.kelassti.presentation.ui.kas.TransaksiViewModel
+import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
 

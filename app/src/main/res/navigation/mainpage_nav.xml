@@ -6,7 +6,7 @@
     app:startDestination="@id/homePageFragment">
     <fragment
         android:id="@+id/homePageFragment"
-        android:name="com.stiproject.kelassti.fragment.HomePageFragment"
+        android:name="com.stiproject.kelassti.presentation.ui.home.HomePageFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home_page" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.stiproject.kelassti.fragment.MyProfileFragment"
+        android:name="com.stiproject.kelassti.presentation.ui.profile.MyProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_my_profile" >
         <action

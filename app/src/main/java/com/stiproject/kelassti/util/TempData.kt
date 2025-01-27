@@ -1,6 +1,6 @@
 package com.stiproject.kelassti.util
 
-import com.stiproject.kelassti.model.response.TasksResponse
+import com.stiproject.kelassti.data.model.response.TasksResponse
 
 object TempData {
 
