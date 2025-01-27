@@ -9,9 +9,8 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.stiproject.kelassti.R
-import com.stiproject.kelassti.adapter.AcakKelompokAdapter
 import com.stiproject.kelassti.databinding.FragmentMyProfileBinding
-import com.stiproject.kelassti.fragment.dialog.AcakKelompokFragment
+import com.stiproject.kelassti.fragment.dialog.DialogAcakKelompokFragment
 import com.stiproject.kelassti.viewmodel.UserViewModel
 
 class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
@@ -40,7 +39,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 binding.textViewUsernameMyProfile.text = userDat.name
 
                 binding.buttonToAcak.setOnClickListener{
-                    AcakKelompokFragment().show(parentFragmentManager,"acakkelompok")
+                    DialogAcakKelompokFragment().show(parentFragmentManager,"acakkelompok")
                 }
 
                 binding.includeProdiSection.apply {

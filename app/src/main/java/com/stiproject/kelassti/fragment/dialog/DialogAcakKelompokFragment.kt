@@ -4,12 +4,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
@@ -17,7 +15,7 @@ import com.stiproject.kelassti.adapter.AcakKelompokAdapter
 import com.stiproject.kelassti.databinding.FragmentAcakKelompokBinding
 import com.stiproject.kelassti.util.acakKelompok
 
-class AcakKelompokFragment : DialogFragment() {
+class DialogAcakKelompokFragment : DialogFragment() {
 
     private var _binding: FragmentAcakKelompokBinding? = null
     private val binding get() = _binding!!
