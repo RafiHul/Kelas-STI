@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): ViewModel() {
-    private val _transaksiKas: MutableLiveData<TransaksiDataArray> = MutableLiveData()
-    var transaksiKas = _transaksiKas
+//    private val _transaksiKas: MutableLiveData<TransaksiDataArray> = MutableLiveData()
+//    var transaksiKas = _transaksiKas
 
     private val _totalTransaksiKas: MutableLiveData<Long> = MutableLiveData()
     val totalTransaksiKas = _totalTransaksiKas
@@ -60,7 +60,7 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
 
             val dataList = body.data
-            _transaksiKas.postValue(body.data)
+//            _transaksiKas.postValue(body.data)
 
             val pemasukanKas = setTotal(dataList,"pemasukan")
             val pengeluaranKas = setTotal(dataList,"pengeluaran")

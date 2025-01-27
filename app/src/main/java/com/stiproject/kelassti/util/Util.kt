@@ -34,6 +34,24 @@ fun Long.convertToRupiahFormat(): String {
     return thumb.joinToString("").reversed().dropLast(1)
 }
 
+fun Array<String>.acakKelompok(size: Int): MutableList<MutableList<String>> {
+
+    /**
+     * @param size Jumlah kelompok
+     * @return Setiap index mempresentasikan anggota dari kelompok (String)
+     */
+
+    val shuffle = this.toMutableList().shuffled()
+    val thum = MutableList(size) { emptyList<String>().toMutableList() }
+
+    for(i in this.indices){
+        val y = i % size
+        thum[y].add(shuffle[i])
+    }
+
+    return thum
+}
+
 fun ResponseBody?.parseErrorMessageJsonToString(): String {
     return try {
         val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)

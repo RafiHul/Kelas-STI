@@ -65,6 +65,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView7"
             android:layout_width="match_parent"
             android:layout_height="492dp"
             android:layout_marginStart="32dp"
@@ -86,8 +87,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     android:layout_marginTop="20dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -98,21 +99,25 @@
                         layout="@layout/item_profile_info"
                         android:layout_width="0dp"
                         android:layout_height="0dp" />
+
                     <include
                         android:id="@+id/includeEmailSection"
                         layout="@layout/item_profile_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                     <include
                         android:id="@+id/includeNimSection"
                         layout="@layout/item_profile_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                     <include
                         android:id="@+id/includeSemesterSection"
                         layout="@layout/item_profile_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
                     <include
                         android:id="@+id/includeBirthSection"
                         layout="@layout/item_profile_info"
@@ -122,6 +127,14 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/buttonToAcak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="@+id/cardView7"
+            app:layout_constraintTop_toBottomOf="@+id/cardView7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
