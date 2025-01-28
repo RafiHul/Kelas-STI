@@ -38,15 +38,19 @@ fun Array<String>.acakKelompok(size: Int): MutableList<MutableList<String>> {
 
     /**
      * @param size Jumlah kelompok
-     * @return Setiap index mempresentasikan anggota dari kelompok (String)
      */
 
-    val shuffle = this.toMutableList().shuffled()
+    val splitindex = 7
+
+    val mhsp = this.take(splitindex).shuffled().shuffled() //Mahasiswa Perempuan
+    val mhsl = this.drop(splitindex).shuffled().shuffled() //Mahasiswa Laki Laki
+
+    val mergemhs = mhsp.plus(mhsl)
     val thum = MutableList(size) { emptyList<String>().toMutableList() }
 
     for(i in this.indices){
         val y = i % size
-        thum[y].add(shuffle[i])
+        thum[y].add(mergemhs[i])
     }
 
     return thum

@@ -17,11 +17,16 @@
         <item>Pengeluaran</item>
     </string-array>
     <string-array name="NamaMahasiswa">
-        <item>ADAM SOFYAN</item>
         <item>CITRA ZAHWA PRAMESTI</item>
+        <item>AZHAR TSANIA</item>
+        <item>EKA MAULIDDYAH INDRA SAPUTRI</item>
+        <item>ISNAENI HIDAYATI</item>
+        <item>DEA MARDIANA SAFIRA</item>
+        <item>EKA DHURROTUL FAHIRAH"</item>
+        <item>AGHINAFI ROHMATILLAH</item>
+        <item>ADAM SOFYAN</item>
         <item>MUKHAMMAD TAUFIQURROCHMAN</item>
         <item>PAULUS RIZKY ADI NUGROHO</item>
-        <item>AGHINAFI ROHMATILLAH</item>
         <item>MUHAMMAD ZIDAN PRATAMA</item>
         <item>DAVA ZULIANSYAH PUTRA</item>
         <item>MUHAMMAD FARDAN AL-ADHOM</item>
@@ -29,15 +34,11 @@
         <item>AKHMAD FERDIANSYAH AL GHIFARI</item>
         <item>M.HILMAN</item>
         <item>ERICK GEOVANI</item>
-        <item>AZHAR TSANIA</item>
         <item>MOKHAMAD BAYU ADISAPUTRA</item>
         <item>NUR MOHAMMAD ASSHIDIQ</item>
         <item>ALVIAN RAFLI SAPUTRA</item>
         <item>FAUHAD BUTOLO</item>
         <item>ABDUL QODIR ARIF ROHMATULLOH</item>
-        <item>EKA MAULIDDYAH INDRA SAPUTRI</item>
-        <item>ISNAENI HIDAYATI</item>
-        <item>AYESHA CLIOPARI NAJID</item>
         <item>MUHAMMAD RIZKY DWI SAPUTRA</item>
         <item>MUKHAMMAD DWI WAHYUDIN</item>
         <item>MUHAMMAD ABDILLAH FIRDAUS</item>
@@ -48,7 +49,5 @@
         <item>TITO SUMARTONO</item>
         <item>MUHAMMAD FIRMAN MAULIDDIN</item>
         <item>DWI LUKMAN SAPUTRO</item>
-        <item>DEA MARDIANA SAFIRA</item>
-        <item>EKA DHURROTUL FAHIRAH"</item>
     </string-array>
 </resources>
