@@ -1,6 +1,7 @@
 package com.stiproject.kelassti.data.remote.api
 
 import com.stiproject.kelassti.data.model.request.KasRequest
+import com.stiproject.kelassti.data.model.response.transaksi.TransaksiAllDataResponse
 import com.stiproject.kelassti.data.model.response.transaksi.TransaksiDataByIdResponse
 import com.stiproject.kelassti.data.model.response.transaksi.TransaksiDataResponse
 import retrofit2.Response
@@ -13,8 +14,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TransaksiApi {
-    @GET("/transaksi")
-    suspend fun getTransaksi(): Response<TransaksiDataResponse>
+    @GET("/transaksi/all")
+    suspend fun getAllTransaksi(): Response<TransaksiAllDataResponse>
 
 
     @GET("/transaksi")

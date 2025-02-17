@@ -50,4 +50,77 @@
         <item>MUHAMMAD FIRMAN MAULIDDIN</item>
         <item>DWI LUKMAN SAPUTRO</item>
     </string-array>
+
+    <string-array name="AllNamaMahasiswa">
+        <item>ADAM SOFYAN</item>
+        <item>CITRA ZAHWA PRAMESTI</item>
+        <item>MUKHAMMAD TAUFIQURROCHMAN</item>
+        <item>PAULUS RIZKY ADI NUGROHO</item>
+        <item>AGHINAFI ROHMATILLAH</item>
+        <item>MUHAMMAD ZIDAN PRATAMA</item>
+        <item>DAVA ZULIANSYAH PUTRA</item>
+        <item>MUHAMMAD FARDAN AL-ADHOM</item>
+        <item>IBAD AR RAHMAN</item>
+        <item>AKHMAD FERDIANSYAH AL GHIFARI</item>
+        <item>M.HILMAN</item>
+        <item>ERICK GEOVANI</item>
+        <item>AZHAR TSANIA</item>
+        <item>MOKHAMAD BAYU ADISAPUTRA</item>
+        <item>NUR MOHAMMAD ASSHIDIQ</item>
+        <item>ALVIAN RAFLI SAPUTRA</item>
+        <item>FAQITA AKHMAD KURNIADI</item>
+        <item>FAUHAD BUTOLO</item>
+        <item>ABDUL QODIR ARIF ROHMATULLOH</item>
+        <item>EKA MAULIDDYAH INDRA SAPUTRI</item>
+        <item>ISNAENI HIDAYATI</item>
+        <item>AYESHA CLIOPARI NAJID</item>
+        <item>MUHAMMAD RIZKY DWI SAPUTRA</item>
+        <item>MUKHAMMAD DWI WAHYUDIN</item>
+        <item>MUHAMMAD ABDILLAH FIRDAUS</item>
+        <item>MUHAMMAD MURTADLO</item>
+        <item>MUHAMMAD RAFIHUL AKHIROH</item>
+        <item>WILLIAM EFFENDI</item>
+        <item>MOHAMMAD ARTHUR ROZI</item>
+        <item>TITO SUMARTONO</item>
+        <item>MUHAMMAD FIRMAN MAULIDDIN</item>
+        <item>DWI LUKMAN SAPUTRO</item>
+        <item>DEA MARDIANA SAFIRA</item>
+        <item>EKA DHURROTUL FAHIRAH</item>
+    </string-array>
+
+    <string-array name="AllNimMahasiswa">
+        <item>24121003</item>
+        <item>24121004</item>
+        <item>24121005</item>
+        <item>24121006</item>
+        <item>24121007</item>
+        <item>24121008</item>
+        <item>24121009</item>
+        <item>24121010</item>
+        <item>24121011</item>
+        <item>24121012</item>
+        <item>24121013</item>
+        <item>24121014</item>
+        <item>24121015</item>
+        <item>24121016</item>
+        <item>24121017</item>
+        <item>24121018</item>
+        <item>24121019</item>
+        <item>24121020</item>
+        <item>24121021</item>
+        <item>24121022</item>
+        <item>24121023</item>
+        <item>24121024</item>
+        <item>24121025</item>
+        <item>24121026</item>
+        <item>24121027</item>
+        <item>24121028</item>
+        <item>24121029</item>
+        <item>24121030</item>
+        <item>24121031</item>
+        <item>24121032</item>
+        <item>24121033</item>
+        <item>24121034</item>
+    </string-array>
+
 </resources>

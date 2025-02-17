@@ -61,7 +61,6 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
             }
 
             val dataList = body.data
-//            _transaksiKas.postValue(body.data)
 
             val pemasukanKas = setTotal(dataList,"pemasukan")
             val pengeluaranKas = setTotal(dataList,"pengeluaran")
