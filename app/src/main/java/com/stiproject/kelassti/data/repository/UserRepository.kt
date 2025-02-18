@@ -26,4 +26,6 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getUsersByJwt(jwt: String) = userService.getUsersByJwt(jwt)
+
+    suspend fun getMahasiswaByName(name: String) = userService.getMahasiswaByName(name)
 }

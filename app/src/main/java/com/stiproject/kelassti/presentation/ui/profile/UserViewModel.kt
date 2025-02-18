@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.data.model.request.LoginRequest
 import com.stiproject.kelassti.data.model.request.RegisterRequest
+import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaAllDataResponse
 import com.stiproject.kelassti.data.repository.UserRepository
 import com.stiproject.kelassti.presentation.state.UserDataHolder
 import com.stiproject.kelassti.util.ApiResult
@@ -92,16 +93,37 @@ class UserViewModel @Inject constructor(app: Application, val repo: UserReposito
         }
     }
 
+    fun getMahasiswaByName(name: String, action: (ApiResult<MahasiswaAllDataResponse>) -> Unit){
+        viewModelScope.launch{
+            val response = repo.getMahasiswaByName(name)
+            val body = response.body()
+//            val errBody = response.errorBody()
+
+            if (!response.isSuccessful || body == null){
+                action(ApiResult.Failed(MahasiswaAllDataResponse("Gagal Mendapatkan Data",null)))
+                return@launch
+            }
+
+            if (body.data!!.isEmpty()){
+                action(ApiResult.Failed(MahasiswaAllDataResponse("Tidak ada mahasiswa dengan nama tersebut",null)))
+                return@launch
+            }
+
+            action(ApiResult.Success(body))
+        }
+    }
+
     suspend fun setJwtToken(context: Context,token: String){
         userState.setJwtToken(token)
         DataStoreUtil.saveLoginToken(context,token)
     }
 
     fun clearJwtToken(context: Context){
+        // TODO: add clear jwt in userstate too
         viewModelScope.launch{
             DataStoreUtil.clearLoginInfo(context)
         }
     }
 
-    fun getJwtBearer(): String = "Bearer ${userState.userState.value?.jwtToken}"
+    fun getJwtBearer(): String = "Bearer ${userState.userState.value?.jwtToken}" // TODO: some jwt bugs
 }

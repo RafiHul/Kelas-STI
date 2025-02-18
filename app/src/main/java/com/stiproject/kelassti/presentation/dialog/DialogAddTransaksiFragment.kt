@@ -1,21 +1,23 @@
 package com.stiproject.kelassti.presentation.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.data.model.request.KasRequest
-import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
+import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.presentation.ui.kas.TransaksiViewModel
@@ -30,10 +32,11 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
     private val userViewModel: UserViewModel by activityViewModels()
     private val transaksiViewModel: TransaksiViewModel by activityViewModels()
 
-    private lateinit var bindingNimMahasiswaKasInput: EditText
+    private lateinit var bindingNimMahasiswaKasInput: SearchView
     private lateinit var bindingNominalKasInput: EditText
     private lateinit var bindingDeskripsiKasInput: EditText
     private lateinit var typeSpinner: Spinner
+    private lateinit var pickMahasiswaAdapter: PickMahasiswaAdapter
 
     private var kasId: Int? = null
     private var typeKasInput: String? = null
@@ -57,7 +60,16 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         typeSpinner = binding.spinnerTypeKas
         typeSpinner.onItemSelectedListener = this
 
-        bindingNimMahasiswaKasInput = binding.editTextNIMMahasiswaKas // TODO: ini bikin biar gk ribet, seperti ada pick nim
+        bindingNimMahasiswaKasInput = binding.searchViewNIMMahasiswaKas
+
+        pickMahasiswaAdapter = PickMahasiswaAdapter{
+            bindingNimMahasiswaKasInput.setQuery(it.toString(),true) // TODO: submit?
+        }
+        val recyclerViewPickMahasiswa = binding.recyclerViewPickMahasiswa.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            adapter = pickMahasiswaAdapter
+        }
+
         bindingNominalKasInput = binding.editTextTextNominalKas
         bindingDeskripsiKasInput = binding.editTextDeskripsiKas
 
@@ -86,7 +98,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                         binding.imageView.visibility = View.GONE
                         bindingNimMahasiswaKasInput.visibility = View.GONE
 
-                        bindingNimMahasiswaKasInput.setText(data.NIM_mahasiswa.toString())
+                        bindingNimMahasiswaKasInput.setQuery(data.NIM_mahasiswa.toString(),true) // TODO: submit?
                         bindingDeskripsiKasInput.setText(data.deskripsi)
                         bindingNominalKasInput.setText(data.nominal.toString())
 
@@ -139,7 +151,29 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
             dismiss()
         }
 
+        bindingNimMahasiswaKasInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                userViewModel.getMahasiswaByName(newText.toString()){ apiResult ->
+                    when(apiResult){
+                        is ApiResult.Failed -> {
+                            Toast.makeText(context, apiResult.messageFailed.message, Toast.LENGTH_SHORT).show()
+                            recyclerViewPickMahasiswa.visibility = View.GONE
+                        }
+                        is ApiResult.Success -> {
+                            pickMahasiswaAdapter.differ.submitList(apiResult.messageSuccess.data)
+                            recyclerViewPickMahasiswa.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                return false
+            }
+
+        })
 
 
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -147,7 +181,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
     }
 
     private fun getKasRequest(): KasRequest? {
-        val nimMahasiswaKasInput = bindingNimMahasiswaKasInput.text.toString()
+        val nimMahasiswaKasInput = bindingNimMahasiswaKasInput.query.toString()
         val deskripsiKasInput = bindingDeskripsiKasInput.text.toString()
         val nominalKasInput = bindingNominalKasInput.text.toString()
 

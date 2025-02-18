@@ -3,6 +3,7 @@ package com.stiproject.kelassti.data.remote.api
 import com.stiproject.kelassti.data.model.request.LoginRequest
 import com.stiproject.kelassti.data.model.request.RegisterRequest
 import com.stiproject.kelassti.data.model.response.login.LoginResponse
+import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaAllDataResponse
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataResponse
 import com.stiproject.kelassti.data.model.response.register.RegisterResponse
 import retrofit2.Response
@@ -11,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface UserApi {
     @POST("/auth/register")
@@ -32,4 +34,9 @@ interface UserApi {
     suspend fun getUsersByJwt(
         @Header("Authorization") jwt: String
     ): Response<MahasiswaDataResponse>
+
+    @GET("/mahasiswa")
+    suspend fun getMahasiswaByName(
+        @Query("name") name: String
+    ): Response<MahasiswaAllDataResponse>
 }
