@@ -1,7 +1,6 @@
 package com.stiproject.kelassti.presentation.dialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.data.model.request.KasRequest
-import com.stiproject.kelassti.data.model.response.user.UserData
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
 import com.stiproject.kelassti.presentation.ui.kas.TransaksiViewModel
 import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
+import java.lang.NumberFormatException
 import kotlin.toString
 
 class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_transaksi), AdapterView.OnItemSelectedListener {
@@ -41,6 +40,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
     private var kasId: Int? = null
     private var typeKasInput: String? = null
+    private var nameAndNim = Pair<String?,Int?>(null,null)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         bindingNimMahasiswaKasInput = binding.searchViewNIMMahasiswaKas
 
         pickMahasiswaAdapter = PickMahasiswaAdapter{
-            bindingNimMahasiswaKasInput.setQuery(it,true) // TODO: submit?
+            nameAndNim = it
+            bindingNimMahasiswaKasInput.setQuery(it.first,false)
         }
 
         val recyclerViewPickMahasiswa = binding.recyclerViewPickMahasiswa.apply {
@@ -100,7 +101,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                         binding.imageView.visibility = View.GONE
                         bindingNimMahasiswaKasInput.visibility = View.GONE
 
-                        bindingNimMahasiswaKasInput.setQuery(data.NIM_mahasiswa.toString(),true) // TODO: submit?
+                        bindingNimMahasiswaKasInput.setQuery(data.NIM_mahasiswa.toString(),true)
                         bindingDeskripsiKasInput.setText(data.deskripsi)
                         bindingNominalKasInput.setText(data.nominal.toString())
 
@@ -155,6 +156,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
         bindingNimMahasiswaKasInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                binding.recyclerViewPickMahasiswa.visibility = View.GONE
                 return false
             }
 
@@ -162,8 +164,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                 userViewModel.getMahasiswaByName(newText.toString()){ apiResult ->
                     when(apiResult){
                         is ApiResult.Failed -> {
-                            Toast.makeText(context, apiResult.messageFailed.message, Toast.LENGTH_SHORT).show()
                             recyclerViewPickMahasiswa.visibility = View.GONE
+//                            Toast.makeText(context, apiResult.messageFailed.message, Toast.LENGTH_SHORT).show()
                         }
                         is ApiResult.Success -> {
                             pickMahasiswaAdapter.differ.submitList(apiResult.messageSuccess.data)
@@ -183,18 +185,24 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
     }
 
     private fun getKasRequest(): KasRequest? {
-        val nimMahasiswaKasInput = bindingNimMahasiswaKasInput.query.toString()
+        // TODO: mungkin pakai first?
+        val nimMahasiswaKasInput = if (nameAndNim.second != null) nameAndNim.second.toString() else bindingNimMahasiswaKasInput.query.toString()
         val deskripsiKasInput = bindingDeskripsiKasInput.text.toString()
         val nominalKasInput = bindingNominalKasInput.text.toString()
 
+        // TODO: ini kasih validasi yang benar, kalo misalnya nim mahasiswa string. kemudian error ketika di convert ke int
         if (nimMahasiswaKasInput.isNotEmpty() && nominalKasInput.isNotEmpty() && deskripsiKasInput.isNotEmpty() && typeKasInput != null) {
-            val kasRequest = KasRequest(
-                nimMahasiswaKasInput.toInt(),
-                deskripsiKasInput,
-                nominalKasInput.toInt(),
-                typeKasInput.toString().lowercase()
-            )
-            return kasRequest
+            try {
+                val kasRequest = KasRequest(
+                    nimMahasiswaKasInput.toInt(),
+                    deskripsiKasInput,
+                    nominalKasInput.toInt(),
+                    typeKasInput.toString().lowercase()
+                )
+                return kasRequest
+            } catch (e: NumberFormatException){
+                return null
+            }
         }
         return null
     }
