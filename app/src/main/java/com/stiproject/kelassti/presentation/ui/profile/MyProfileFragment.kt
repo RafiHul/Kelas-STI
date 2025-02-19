@@ -11,7 +11,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentMyProfileBinding
 import com.stiproject.kelassti.presentation.dialog.DialogAcakKelompokFragment
-import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 
 class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
@@ -37,6 +36,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 val userDat = it.userData
 
                 binding.textViewUsernameMyProfile.text = userDat.name
+                binding.textView10.text = userDat.usernameByNIM.toString()
 
                 binding.buttonToAcak.setOnClickListener{
                     DialogAcakKelompokFragment().show(parentFragmentManager,"acakkelompok")

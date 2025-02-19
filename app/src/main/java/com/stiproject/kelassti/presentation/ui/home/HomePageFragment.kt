@@ -10,9 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.KasActivity
 import com.stiproject.kelassti.R
-import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
 import com.stiproject.kelassti.databinding.FragmentHomePageBinding
-import com.stiproject.kelassti.presentation.state.UserState
 import com.stiproject.kelassti.presentation.adapter.TasksAdapter
 import com.stiproject.kelassti.util.TempData
 import com.stiproject.kelassti.presentation.ui.profile.UserViewModel

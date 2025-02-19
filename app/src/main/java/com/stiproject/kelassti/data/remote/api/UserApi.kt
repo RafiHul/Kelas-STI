@@ -5,6 +5,7 @@ import com.stiproject.kelassti.data.model.request.RegisterRequest
 import com.stiproject.kelassti.data.model.response.login.LoginResponse
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaAllDataResponse
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataResponse
+import com.stiproject.kelassti.data.model.response.user.UserDataResponse
 import com.stiproject.kelassti.data.model.response.register.RegisterResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -33,7 +34,7 @@ interface UserApi {
     @GET("/users/profile")
     suspend fun getUsersByJwt(
         @Header("Authorization") jwt: String
-    ): Response<MahasiswaDataResponse>
+    ): Response<UserDataResponse>
 
     @GET("/mahasiswa")
     suspend fun getMahasiswaByName(

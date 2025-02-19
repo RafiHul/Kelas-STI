@@ -1,6 +1,5 @@
 package com.stiproject.kelassti.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -9,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
 import com.stiproject.kelassti.databinding.ItemPickMahasiswaBinding
 
-class PickMahasiswaAdapter(val action: (Int) -> Unit): RecyclerView.Adapter<PickMahasiswaAdapter.MyViewHolder>() {
+class PickMahasiswaAdapter(val action: (String) -> Unit): RecyclerView.Adapter<PickMahasiswaAdapter.MyViewHolder>() {
     inner class MyViewHolder(val binding: ItemPickMahasiswaBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: MahasiswaData){
-            binding.textViewPickMahasiswaNim.text = String.format(currentItem.usernameByNIM.toString())
+            val nim = String.format(currentItem.NIM.toString())
+            binding.textViewPickMahasiswaNim.text = nim
             binding.textViewPickMahasiswaName.text = currentItem.name
 
             binding.root.setOnClickListener{
-                action(currentItem.usernameByNIM)
+                action(nim)
             }
         }
     }

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.data.model.request.KasRequest
+import com.stiproject.kelassti.data.model.response.user.UserData
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
@@ -63,8 +64,9 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         bindingNimMahasiswaKasInput = binding.searchViewNIMMahasiswaKas
 
         pickMahasiswaAdapter = PickMahasiswaAdapter{
-            bindingNimMahasiswaKasInput.setQuery(it.toString(),true) // TODO: submit?
+            bindingNimMahasiswaKasInput.setQuery(it,true) // TODO: submit?
         }
+
         val recyclerViewPickMahasiswa = binding.recyclerViewPickMahasiswa.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter = pickMahasiswaAdapter

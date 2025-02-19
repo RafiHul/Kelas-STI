@@ -8,7 +8,6 @@ import com.stiproject.kelassti.data.model.request.LoginRequest
 import com.stiproject.kelassti.data.model.request.RegisterRequest
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaAllDataResponse
 import com.stiproject.kelassti.data.repository.UserRepository
-import com.stiproject.kelassti.presentation.state.UserDataHolder
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.DataStoreUtil
 import com.stiproject.kelassti.util.parseErrorMessageJsonToString
