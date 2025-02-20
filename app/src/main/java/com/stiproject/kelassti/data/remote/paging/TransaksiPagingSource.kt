@@ -18,12 +18,15 @@ class TransaksiPagingSource(
             val response = transaksiService.getTransaksiPage(page.toString(), params.loadSize.toString())
             val body = response.body()!!
             val data = body.data
-            val isNext = body.page.Links[1].url?.toInt()
+            val nextPageUrl = body.page.Links[1].url
+            val nextPage = nextPageUrl?.let {
+                Regex("page=(\\d+)").find(it)?.groupValues?.get(1)?.toInt()
+            }
 
             LoadResult.Page(
                 data = data,
                 prevKey = null,
-                nextKey = if (isNext != null) page + 1 else null
+                nextKey = nextPage
             )
 
         } catch (e: Exception){
