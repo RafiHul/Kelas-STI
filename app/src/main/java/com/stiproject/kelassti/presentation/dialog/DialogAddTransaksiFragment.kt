@@ -1,6 +1,7 @@
 package com.stiproject.kelassti.presentation.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,6 +149,12 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
                 if (kasRequest == null){
                     Toast.makeText(context, "Tidak boleh ada yang kosong", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+
+                if(bindingNimMahasiswaKasInput.query.toString() != MahasiswaNameAndNimSelected.first){
+                    Toast.makeText(context, "Harap menulisakan nama dengan lengkap dan benar", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
