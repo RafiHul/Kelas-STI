@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.data.model.request.KasRequest
+import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataArray
+import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
@@ -97,8 +99,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                         Toast.makeText(context, "Terjadi Kesalahan saat mengambil data", Toast.LENGTH_SHORT).show()
                         dismiss()
                     }
-                    is ApiResult.Success -> {
-                        val data = result.messageSuccess!!
+                    is ApiResult.Success<*> -> {
+                        val data = result.data as TransaksiData
 
                         MahasiswaNameAndNimSelected = Pair(data.nama,data.NIM_mahasiswa)
 
@@ -182,8 +184,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                             recyclerViewPickMahasiswa.visibility = View.GONE
 //                            Toast.makeText(context, apiResult.messageFailed.message, Toast.LENGTH_SHORT).show()
                         }
-                        is ApiResult.Success -> {
-                            pickMahasiswaAdapter.differ.submitList(apiResult.messageSuccess.data)
+                        is ApiResult.Success<*> -> {
+                            pickMahasiswaAdapter.differ.submitList(apiResult.data as MahasiswaDataArray)
                             recyclerViewPickMahasiswa.visibility = View.VISIBLE
                         }
                     }

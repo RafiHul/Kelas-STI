@@ -6,10 +6,10 @@ import com.google.gson.Gson
 import com.stiproject.kelassti.data.model.response.ApiErrorResponse
 import okhttp3.ResponseBody
 
-fun handleToastApiResult(context: Context?, result: ApiResult<String>){
+fun handleToastApiResult(context: Context?, result: ApiResult){
     when(result){
         is ApiResult.Failed -> Toast.makeText(context, result.messageFailed, Toast.LENGTH_SHORT).show()
-        is ApiResult.Success -> Toast.makeText(context, result.messageSuccess, Toast.LENGTH_SHORT).show()
+        is ApiResult.Success<*> -> Toast.makeText(context, result.messageSuccess, Toast.LENGTH_SHORT).show()
     }
 }
 

@@ -43,88 +43,49 @@ class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): Vi
         _refreshTrigger.value = true
     }
 
-    fun getTransaksi(action: (ApiResult<String>) -> Unit = {}){
+    fun getTransaksi(action: (ApiResult) -> Unit = {}){
         viewModelScope.launch {
 
-            val response = repo.getAllTransaksi()
-            val body = response.body()
-            val errorBody = response.errorBody()
+            val resp = repo.getAllTransaksi()
 
-            if(!response.isSuccessful){
-                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
-                return@launch
+            if (resp is ApiResult.Success<*>) {
+                val transaksiDat = resp.data as TransaksiDataArray
+
+                val pemasukanKas = setTotal(transaksiDat, "pemasukan")
+                val pengeluaranKas = setTotal(transaksiDat, "pengeluaran")
+                val totalKas = pemasukanKas!! - pengeluaranKas!!
+
+                _totalPemasukanKas.postValue(pemasukanKas)
+                _totalPengeluaranKas.postValue(pengeluaranKas)
+                _totalTransaksiKas.postValue(totalKas)
+            } else {
+                action(resp)
             }
-
-            if (body == null){
-                action(ApiResult.Failed("Gagal Mendapatkan data kas"))
-                return@launch
-            }
-
-            val dataList = body.data
-
-            val pemasukanKas = setTotal(dataList,"pemasukan")
-            val pengeluaranKas = setTotal(dataList,"pengeluaran")
-            val totalKas = pemasukanKas!! - pengeluaranKas!!
-
-            _totalPemasukanKas.postValue(pemasukanKas)
-            _totalPengeluaranKas.postValue(pengeluaranKas)
-            _totalTransaksiKas.postValue(totalKas)
         }
     }
 
-    fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
+    fun addTransaksiKas(jwtToken: String, kasRequest: KasRequest, action: (ApiResult) -> Unit){
         viewModelScope.launch{
-
             val response = repo.postTransaksi(jwtToken,kasRequest)
-            val body = response.body()
-            val errorBody = response.errorBody()
-
-            if(!response.isSuccessful){
-                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
-                return@launch
-            }
-
-            if (body == null){
-                action(ApiResult.Failed("Gagal Menambahkan Data"))
-                return@launch
-            }
-
             getTransaksi()
             refreshTriggered()
-            action(ApiResult.Success(body.message))
+            action(response)
         }
     }
 
-    fun getTransaksiById(id: Int, action: (ApiResult<TransaksiData?>) -> Unit) {
+    fun getTransaksiById(id: Int, action: (ApiResult) -> Unit) {
         viewModelScope.launch {
-
             val response = repo.getTransaksiById(id.toString())
-            val body = response.body()
-
-            if (!response.isSuccessful || body == null) {
-                action(ApiResult.Failed(null)) // TODO: ini bisa pake body.message (string)
-                return@launch
-            }
-
-            action(ApiResult.Success(body.data))
+            action(response)
         }
     }
 
-    fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (ApiResult<String>) -> Unit){
+    fun updateTransaksiById(id: Int, jwtToken: String, kasRequest: KasRequest, action: (ApiResult) -> Unit){
         viewModelScope.launch{
-
             val response = repo.updateTransaksiById(id.toString(), jwtToken, kasRequest)
-            val body = response.body()
-            val errorBody = response.errorBody()
-
-            if(!response.isSuccessful){
-                action(ApiResult.Failed(errorBody.parseErrorMessageJsonToString()))
-                return@launch
-            }
-
             getTransaksi()
             refreshTriggered()
-            action(ApiResult.Success(body?.message.toString()))
+            action(response)
         }
     }
 

@@ -1,7 +1,11 @@
 package com.stiproject.kelassti
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -41,6 +45,12 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
         toggle.setHomeAsUpIndicator(R.drawable.baseline_attach_money_24)
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){ //android 13
+            if(checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 100)
+            }
+        }
+
         lifecycleScope.launch{
             userViewModel.getUsersByJwt{
                 when (it) {
@@ -53,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                    is ApiResult.Success -> Toast.makeText(this@MainActivity, it.messageSuccess, Toast.LENGTH_SHORT).show()
+                    is ApiResult.Success<*> -> Toast.makeText(this@MainActivity, it.messageSuccess, Toast.LENGTH_SHORT).show()
                 }
             }
         }
