@@ -19,8 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransaksiViewModel @Inject constructor (val repo: TransaksiRepository): ViewModel() {
-//    private val _transaksiKas: MutableLiveData<TransaksiDataArray> = MutableLiveData()
-//    var transaksiKas = _transaksiKas
 
     private val _totalTransaksiKas: MutableLiveData<Long> = MutableLiveData()
     val totalTransaksiKas = _totalTransaksiKas

@@ -11,9 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val userDataHolder: UserDataHolder
+    val userState: UserDataHolder
 ) {
-    val userState = userDataHolder
     val userService = RetrofitInstance.getUserService
 
     suspend fun userRegister(data: RegisterRequest): ApiResult {

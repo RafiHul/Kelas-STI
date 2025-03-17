@@ -12,6 +12,7 @@ import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @Singleton
 class TransaksiRepository @Inject constructor() {
     val transaksiService = RetrofitInstance.getTransaksiService
