@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.stiproject.kelassti.R
@@ -17,7 +18,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private var _binding: FragmentMyProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val userViewModel: UserViewModel by activityViewModels()
+    private val myProfileViewModel: MyProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +32,13 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userViewModel.userData.observe(viewLifecycleOwner){
-            if(it.userData != null){
-                val userDat = it.userData
+        myProfileViewModel.setUser()
 
-                binding.textViewUsernameMyProfile.text = userDat.name
-                binding.textView10.text = userDat.usernameByNIM.toString()
+        myProfileViewModel.userData.observe(viewLifecycleOwner){
+            if(it != null){
+
+                binding.textViewUsernameMyProfile.text = it.name
+                binding.textView10.text = String.format(it.usernameByNIM.toString())
 
                 binding.buttonToAcak.setOnClickListener{
                     DialogAcakKelompokFragment().show(parentFragmentManager,"acakkelompok")
@@ -52,7 +54,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 }
                 binding.includeNimSection.apply {
                     textViewLabelProfileInfo.text = "NIM"
-                    textViewValueProfileInfo.text = userDat.usernameByNIM.toString()
+                    textViewValueProfileInfo.text = it.usernameByNIM.toString()
                 }
                 binding.includeSemesterSection.apply {
                     textViewLabelProfileInfo.text = "Semester"

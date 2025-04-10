@@ -13,14 +13,13 @@ import com.stiproject.kelassti.R
 import com.stiproject.kelassti.data.model.request.LoginRequest
 import com.stiproject.kelassti.databinding.FragmentLoginBinding
 import com.stiproject.kelassti.util.handleToastApiResult
-import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private var _binding : FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    val userViewModel: UserViewModel by activityViewModels()
+    val loginViewModel: LoginViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -50,7 +49,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             try {
                 val usernamenum = username.toInt()
-                userViewModel.userLogin(requireContext(), LoginRequest(usernamenum, password)){
+                loginViewModel.userLogin(LoginRequest(usernamenum, password)){
                     handleToastApiResult(context, it)
                 }
             } catch (e: NumberFormatException){

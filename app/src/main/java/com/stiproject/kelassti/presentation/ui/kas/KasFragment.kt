@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentKasBinding
 import com.stiproject.kelassti.presentation.dialog.DialogAuthorisasiFragment
 import com.stiproject.kelassti.presentation.adapter.TransaksiAdapter
-import com.stiproject.kelassti.presentation.dialog.DialogAddTransaksiFragment
+import com.stiproject.kelassti.presentation.dialog.kas.DialogAddKasFragment
 import com.stiproject.kelassti.util.convertToRupiahFormat
 import com.stiproject.kelassti.util.handleToastApiResult
-import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -24,8 +24,7 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
     private var _binding: FragmentKasBinding? = null
     private val binding get() = _binding!!
 
-    private val transaksiViewModel: TransaksiViewModel by activityViewModels()
-    private val userViewModel: UserViewModel by activityViewModels()
+    private val kasViewModel: KasViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,40 +38,35 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transaksiViewModel.getTransaksi {
+        kasViewModel.getKas {
             handleToastApiResult(context, it)
         }
 
-        transaksiViewModel.totalTransaksiKas.observe(viewLifecycleOwner){
-            binding.textViewKasTotal.text = getString(R.string.rupiah_format,it.convertToRupiahFormat())
+        kasViewModel.kasSummary.observe(viewLifecycleOwner){
+            binding.textViewKasTotal.text = getString(R.string.rupiah_format,it.total.convertToRupiahFormat())
             binding.textViewKasTotalLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewKasTotal.visibility = View.VISIBLE
-        }
 
-        transaksiViewModel.totalPemasukanKas.observe(viewLifecycleOwner){
-            binding.textViewPemasukkan.text = getString(R.string.rupiah_pemasukan_kas,it.convertToRupiahFormat())
+            binding.textViewPemasukkan.text = getString(R.string.rupiah_pemasukan_kas,it.pemasukan.convertToRupiahFormat())
             binding.textViewPemasukanLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewPemasukkan.visibility = View.VISIBLE
-        }
 
-        transaksiViewModel.totalPengeluaranKas.observe(viewLifecycleOwner){
-            binding.textViewPengeluaranKas.text = getString(R.string.rupiah_pengeluaran_kas,it.convertToRupiahFormat())
+            binding.textViewPengeluaranKas.text = getString(R.string.rupiah_pengeluaran_kas,it.pengeluaran.convertToRupiahFormat())
             binding.textViewPengeluaranKasLoading.viewLoadingTransparant.visibility = View.INVISIBLE
             binding.textViewPengeluaranKas.visibility = View.VISIBLE
         }
 
         val transaksiAdapter = TransaksiAdapter(requireContext()) {
-            DialogAddTransaksiFragment.Companion.newInstance(it)
+            DialogAddKasFragment.Companion.newInstance(it)
                 .show(parentFragmentManager, "Transaksi Edit")
         }
 
-        userViewModel.userData.observe(viewLifecycleOwner){ user ->
-            binding.imageButtonAddTransaksi.setOnClickListener{
-                if(user.userData?.role != "admin"){
-                    DialogAuthorisasiFragment().show(parentFragmentManager,"auth")
-                } else {
-                    DialogAddTransaksiFragment().show(parentFragmentManager, "Transaksi New")
-                }
+        // TODO: kalo ada bug ketika add kas berarti ada di sini
+        binding.imageButtonAddTransaksi.setOnClickListener{
+            if(kasViewModel.isUserAdmin()){
+                DialogAddKasFragment().show(parentFragmentManager, "Transaksi New")
+            } else {
+                DialogAuthorisasiFragment().show(parentFragmentManager,"auth")
             }
         }
 
@@ -83,7 +77,7 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
 
         activity?.let {
             lifecycleScope.launch {
-                transaksiViewModel.getTransaksiPage.collectLatest {
+                kasViewModel.getKasPage.collectLatest {
                     transaksiAdapter.submitData(it)
                 }
             }

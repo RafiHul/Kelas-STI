@@ -1,7 +1,6 @@
-package com.stiproject.kelassti.presentation.dialog
+package com.stiproject.kelassti.presentation.dialog.kas
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.R
@@ -21,19 +21,17 @@ import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataArray
 import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
+import com.stiproject.kelassti.presentation.ui.kas.KasViewModel
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
-import com.stiproject.kelassti.presentation.ui.kas.TransaksiViewModel
-import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 import kotlin.toString
 
-class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_transaksi), AdapterView.OnItemSelectedListener {
+class DialogAddKasFragment : DialogFragment(R.layout.fragment_dialog_add_transaksi), AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentDialogAddTransaksiBinding? = null
     private val binding get() = _binding!!
 
-    private val userViewModel: UserViewModel by activityViewModels()
-    private val transaksiViewModel: TransaksiViewModel by activityViewModels()
+    private val dialogKasViewModel: DialogKasViewModel by activityViewModels()
 
     private lateinit var bindingNimMahasiswaKasInput: SearchView
     private lateinit var bindingNominalKasInput: EditText
@@ -57,8 +55,6 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userData = userViewModel.userData.value
-        val userJwtBearer = userViewModel.getJwtBearer()
         val args = arguments
         kasId = args?.getInt("kasId")
 
@@ -93,7 +89,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
         kasId?.let { kasId ->
             binding.textViewTambahkanKas.text = "Edit"
 
-            transaksiViewModel.getTransaksiById(kasId){ result ->
+            dialogKasViewModel.getKasDatById(kasId){ result ->
                 when(result){
                     is ApiResult.Failed -> {
                         Toast.makeText(context, "Terjadi Kesalahan saat mengambil data", Toast.LENGTH_SHORT).show()
@@ -113,7 +109,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
 
                         binding.textViewTambahkanKas.setOnClickListener {
 
-                            if(userData?.userData?.role != "admin"){
+                            if(!dialogKasViewModel.isUserAdmin()){
                                 Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
                                 return@setOnClickListener
                             }
@@ -125,7 +121,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                                 return@setOnClickListener
                             }
 
-                            transaksiViewModel.updateTransaksiById(data.id, userJwtBearer, kasRequest) {
+                            dialogKasViewModel.updateKasById(data.id, kasRequest) {
                                 handleToastApiResult(context,it)
                                 dismiss()
                             }
@@ -137,7 +133,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
             binding.textViewTambahkanKas.text = "Simpan"
             binding.textViewTambahkanKas.setOnClickListener {
 
-                if(userData?.userData?.role != "admin"){
+                if(!dialogKasViewModel.isUserAdmin()){
                     Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -160,7 +156,7 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
                     return@setOnClickListener
                 }
 
-                transaksiViewModel.addTransaksiKas(userJwtBearer, kasRequest) {
+                dialogKasViewModel.addKasData(kasRequest) {
                     handleToastApiResult(context, it)
                     dismiss()
                 }
@@ -178,7 +174,8 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                userViewModel.getMahasiswaByName(newText.toString()){ apiResult ->
+                // TODO: ini ubah pakai flow flatmaplatest dan delay untuk mengurangi beban quary database
+                dialogKasViewModel.getMahasiswaByName(newText.toString()){ apiResult ->
                     when(apiResult){
                         is ApiResult.Failed -> {
                             recyclerViewPickMahasiswa.visibility = View.GONE
@@ -234,9 +231,9 @@ class DialogAddTransaksiFragment : DialogFragment(R.layout.fragment_dialog_add_t
     }
 
     companion object{
-        fun newInstance(kasId: Int): DialogAddTransaksiFragment {
+        fun newInstance(kasId: Int): DialogAddKasFragment {
             val args = Bundle()
-            val fragment = DialogAddTransaksiFragment()
+            val fragment = DialogAddKasFragment()
             args.putInt("kasId",kasId)
             fragment.arguments = args
             return fragment

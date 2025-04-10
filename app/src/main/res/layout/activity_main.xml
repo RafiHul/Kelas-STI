@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/mainDrawerLayout"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".presentation.main.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:background="#2E3342"
-        tools:context=".MainActivity">
+        tools:context=".presentation.main.MainActivity">
 
 
         <androidx.fragment.app.FragmentContainerView

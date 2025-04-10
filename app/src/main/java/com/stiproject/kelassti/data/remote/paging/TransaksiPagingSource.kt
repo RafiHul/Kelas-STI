@@ -3,19 +3,18 @@ package com.stiproject.kelassti.data.remote.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
-import com.stiproject.kelassti.data.remote.api.TransaksiApi
+import com.stiproject.kelassti.data.remote.RetrofitInstance
 
 @Suppress("SYNTHETIC_PROPERTY_WITHOUT_JAVA_ORIGIN")
 // TODO: ini pelajari masih bingung dan tidak jelas
+class TransaksiPagingSource: PagingSource<Int, TransaksiData>() {
 
-class TransaksiPagingSource(
-    private val transaksiService: TransaksiApi
-): PagingSource<Int, TransaksiData>() {
+    private val kasService = RetrofitInstance.getTransaksiService
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TransaksiData> {
-
         return try {
             val page = params.key ?: 1
-            val response = transaksiService.getTransaksiPage(page.toString(), params.loadSize.toString())
+            val response = kasService.getTransaksiPage(page.toString(), params.loadSize.toString())
             val body = response.body()!!
             val data = body.data
             val nextPageUrl = body.page.Links[1].url

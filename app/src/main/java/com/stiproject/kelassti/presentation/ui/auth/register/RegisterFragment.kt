@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.data.model.request.RegisterRequest
 import com.stiproject.kelassti.databinding.FragmentRegisterBinding
 import com.stiproject.kelassti.util.handleToastApiResult
-import com.stiproject.kelassti.presentation.ui.profile.UserViewModel
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private var _binding : FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    val userViewModel: UserViewModel by activityViewModels()
+    val registerViewModel: RegisterViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -51,7 +51,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
             try {
                 val usernum = usernameByNim.toInt()
-                userViewModel.userRegister(RegisterRequest(usernum, password)) {
+                registerViewModel.userRegister(RegisterRequest(usernum, password)) {
                     handleToastApiResult(context, it)
                 }
             } catch (e: NumberFormatException){

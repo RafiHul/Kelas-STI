@@ -1,4 +1,4 @@
-package com.stiproject.kelassti.util
+package com.stiproject.kelassti.data.local
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -14,7 +14,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name="user
 object DataStoreUtil {
     val JWTPREF = stringPreferencesKey("jwt")
 
-    suspend fun saveLoginToken(context: Context,jwt_token:String){
+    suspend fun saveLoginToken(context: Context, jwt_token: String){
         context.dataStore.edit { preferences ->
             preferences[JWTPREF] = jwt_token
         }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#2E3342"
     android:fitsSystemWindows="true"
-    tools:context=".KasActivity">
+    tools:context=".presentation.ui.kas.KasActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView3"
