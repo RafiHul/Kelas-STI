@@ -18,8 +18,6 @@ import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentDialogAddTransaksiBinding
 import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataArray
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
-import com.stiproject.kelassti.domain.model.DialogBehaviour
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.handleToastApiResult
@@ -39,7 +37,6 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
     private lateinit var pickMahasiswaAdapter: PickMahasiswaAdapter
     private lateinit var recyclerViewPickMahasiswa: RecyclerView
 
-    private var kasId: Int? = null
     private var typeKasInput: String? = null
     private var MahasiswaNameAndNimSelectedFromSearch = Pair<String?,Int?>(null,null) //<Name,Nim>
 
@@ -55,7 +52,10 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args = arguments
-        kasId = args?.getInt("kasId")
+
+        val kasId = args?.getInt("kasId")
+
+        dialogKasViewModel.initialize(kasId)
 
         typeSpinner = binding.spinnerTypeKas
         typeSpinner.onItemSelectedListener = this
@@ -84,87 +84,75 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
             typeSpinner.adapter = it
         }
 
-        if (kasId != null){
-            dialogKasViewModel.setDialogBehaviour(DialogBehaviour.EDIT)
-        }
-
-        dialogKasViewModel.dialogBehaviour.observe(viewLifecycleOwner){
+        dialogKasViewModel.dialogKasState.observe(viewLifecycleOwner){
             when(it){
-                DialogBehaviour.EDIT -> {
-                    binding.textViewTambahkanKas.text = "Edit"
 
-                    dialogKasViewModel.getKasDataById(kasId!!) { result ->
-                        when (result) {
-                            is ApiResult.Failed -> {
-                                Toast.makeText(
-                                    context,
-                                    "Terjadi Kesalahan saat mengambil data",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                is DialogKasViewModel.DialogKasState.ApiFailed -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+                is DialogKasViewModel.DialogKasState.ValidationDataFailed -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is DialogKasViewModel.DialogKasState.ApiPostSuccess -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is DialogKasViewModel.DialogKasState.ApiGetSuccess -> {
+                    val data = it.data
+
+                    if(data != null){
+                        binding.textViewTambahkanKas.text = "Edit"
+
+                        MahasiswaNameAndNimSelectedFromSearch = Pair(data.nama, data.NIM_mahasiswa)
+
+                        binding.imageView.visibility = View.GONE
+                        bindingNimMahasiswaKasInput.visibility = View.GONE
+
+                        bindingNimMahasiswaKasInput.setQuery(
+                            MahasiswaNameAndNimSelectedFromSearch.first,
+                            true
+                        )
+
+                        bindingDeskripsiKasInput.setText(data.deskripsi)
+                        bindingNominalKasInput.setText(String.format(data.nominal.toString()))
+
+                        binding.textViewTambahkanKas.setOnClickListener {
+                            if (!dialogKasViewModel.isUserAdmin()) {
+                                Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
                                 dismiss()
                             }
 
-                            is ApiResult.Success<*> -> {
-                                val data = result.data as TransaksiData
+                            dialogKasViewModel.updateKasById(it.id, createKasRequest())
+                        }
+                    } else {
+                        binding.textViewTambahkanKas.text = "Simpan"
 
-                                MahasiswaNameAndNimSelectedFromSearch = Pair(data.nama, data.NIM_mahasiswa)
+                        binding.textViewTambahkanKas.setOnClickListener {
 
-                                binding.imageView.visibility = View.GONE
-                                bindingNimMahasiswaKasInput.visibility = View.GONE
-
-                                bindingNimMahasiswaKasInput.setQuery(
-                                    MahasiswaNameAndNimSelectedFromSearch.first,
-                                    true
-                                )
-
-                                bindingDeskripsiKasInput.setText(data.deskripsi)
-                                bindingNominalKasInput.setText(String.format(data.nominal.toString()))
-
-                                binding.textViewTambahkanKas.setOnClickListener {
-
-                                    if (!dialogKasViewModel.isUserAdmin()) {
-                                        Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
-                                        dismiss()
-                                    }
-
-                                    dialogKasViewModel.updateKasById(data.id, createKasRequest()) {
-                                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                                        dismiss()
-                                    }
-                                }
+                            if(!dialogKasViewModel.isUserAdmin()){
+                                Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
                             }
+
+                            if(MahasiswaNameAndNimSelectedFromSearch.second == null){
+                                Toast.makeText(context, "Harap Mengisi Data Nama Mahasiswa Dengan benar", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+
+                            if(bindingNimMahasiswaKasInput.query.toString() != MahasiswaNameAndNimSelectedFromSearch.first){
+                                Toast.makeText(context, "Harap menulisakan nama dengan lengkap dan benar", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+
+                            dialogKasViewModel.addKasData(createKasRequest())
                         }
                     }
                 }
-                DialogBehaviour.ADDNEW -> {
-                    binding.textViewTambahkanKas.text = "Simpan"
-
-                    binding.textViewTambahkanKas.setOnClickListener {
-
-                        if(!dialogKasViewModel.isUserAdmin()){
-                            Toast.makeText(context, "Anda Bukan Admin", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
-
-                        if(MahasiswaNameAndNimSelectedFromSearch.second == null){
-                            Toast.makeText(context, "Harap Mengisi Data Nama Mahasiswa Dengan benar", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
-
-                        if(bindingNimMahasiswaKasInput.query.toString() != MahasiswaNameAndNimSelectedFromSearch.first){
-                            Toast.makeText(context, "Harap menulisakan nama dengan lengkap dan benar", Toast.LENGTH_SHORT).show()
-                            return@setOnClickListener
-                        }
-
-                        dialogKasViewModel.addKasData(createKasRequest()) {
-                            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                            dismiss()
-                        }
-                    }
-                }
+                DialogKasViewModel.DialogKasState.Idle -> {}
             }
-        }
 
+        }
 
         binding.textViewBatalKas.setOnClickListener{
             dismiss()
@@ -239,7 +227,6 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogKasViewModel.setDialogBehaviour(DialogBehaviour.ADDNEW)
         _binding = null
     }
 }
