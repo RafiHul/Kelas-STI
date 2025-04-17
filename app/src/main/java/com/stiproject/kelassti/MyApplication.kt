@@ -7,6 +7,7 @@ import com.stiproject.kelassti.data.repository.AuthRepository
 import com.stiproject.kelassti.data.repository.GetUserRepository
 import com.stiproject.kelassti.data.repository.KasRepository
 import com.stiproject.kelassti.data.repository.MahasiswaRepository
+import com.stiproject.kelassti.data.repository.TasksRepository
 import com.stiproject.kelassti.presentation.state.UserDataHolder
 import com.stiproject.kelassti.worker.KasReminderNotificationWorker
 import dagger.Module
@@ -56,5 +57,9 @@ class MyApplication: Application(), Configuration.Provider {
         @Provides
         @Singleton
         fun provideKasRepository() = KasRepository()
+
+        @Provides
+        @Singleton
+        fun provideTasksRepository() = TasksRepository()
     }
 }
