@@ -18,6 +18,7 @@ class GetUserUseCase @Inject constructor(
     suspend fun getUsersByJwt(): ApiResult {
         val jwtStorage = jwtTokenStorage.getJwt()
         if (jwtStorage.isNullOrEmpty()){
+            jwtTokenStorage.clearJwtToken()
             return ApiResult.Failed("Gagal Login, Harap Login Ulang!")
         }
 

@@ -96,6 +96,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
                 is DialogKasViewModel.DialogKasState.ApiPostSuccess -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    dismiss()
                 }
 
                 is DialogKasViewModel.DialogKasState.ApiGetSuccess -> {
@@ -123,7 +124,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                                 dismiss()
                             }
 
-                            dialogKasViewModel.updateKasById(it.id, createKasRequest())
+                            dialogKasViewModel.updateKasById(data.id, createKasRequest())
                         }
                     } else {
                         binding.textViewTambahkanKas.text = "Simpan"
@@ -194,7 +195,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
         return KasRequest(
             MahasiswaNameAndNimSelectedFromSearch.second ?: 0,
             bindingDeskripsiKasInput.text.toString(),
-            bindingNominalKasInput.text.toString().toInt(),
+            bindingNominalKasInput.text.toString().let { if(it.isEmpty()) 0 else it.toInt() },
             typeKasInput ?: ""
         )
 

@@ -1,10 +1,9 @@
 package com.stiproject.kelassti.domain.usecase
 
-import androidx.lifecycle.viewModelScope
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.stiproject.kelassti.data.local.JwtTokenStorage
 import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
@@ -93,6 +92,7 @@ class KasUseCase @Inject constructor(
             return ApiResult.Failed("Gagal Menambahkan Data")
         }
 
+        refreshTriggered()
         getAllKasData()
         return ApiResult.Success(body.message, null)
     }
@@ -117,6 +117,7 @@ class KasUseCase @Inject constructor(
             return ApiResult.Failed(errorBody.parseErrorMessageJsonToString())
         }
 
+        refreshTriggered()
         getAllKasData()
         return ApiResult.Success(body.message,body.data)
     }

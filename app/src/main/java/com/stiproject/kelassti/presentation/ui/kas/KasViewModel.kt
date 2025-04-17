@@ -32,6 +32,10 @@ class KasViewModel @Inject constructor(
         }
     }
 
+    fun refreshKasSummary(){
+        _kasSummary.postValue(kasUseCase.kasSummary)
+    }
+
     fun isUserAdmin(): Boolean {
         return userUseCase.cekUserAdmin()
     }

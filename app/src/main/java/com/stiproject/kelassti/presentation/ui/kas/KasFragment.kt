@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentKasBinding
 import com.stiproject.kelassti.presentation.dialog.DialogAuthorisasiFragment
 import com.stiproject.kelassti.presentation.adapter.TransaksiAdapter
-import com.stiproject.kelassti.presentation.dialog.kas.DialogAddKasFragment
+import com.stiproject.kelassti.presentation.dialog.kas.DialogAddOrUpdateKasFragment
 import com.stiproject.kelassti.util.convertToRupiahFormat
 import com.stiproject.kelassti.util.handleToastApiResult
 import kotlinx.coroutines.flow.collectLatest
@@ -57,14 +56,13 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
         }
 
         val transaksiAdapter = TransaksiAdapter(requireContext()) {
-            DialogAddKasFragment.Companion.newInstance(it)
+            DialogAddOrUpdateKasFragment.Companion.newInstance(it)
                 .show(parentFragmentManager, "Transaksi Edit")
         }
 
-        // TODO: kalo ada bug ketika add kas berarti ada di sini
         binding.imageButtonAddTransaksi.setOnClickListener{
             if(kasViewModel.isUserAdmin()){
-                DialogAddKasFragment().show(parentFragmentManager, "Transaksi New")
+                DialogAddOrUpdateKasFragment().show(parentFragmentManager, "Transaksi New")
             } else {
                 DialogAuthorisasiFragment().show(parentFragmentManager,"auth")
             }
@@ -83,6 +81,13 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
             }
         }
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        kasViewModel.refreshKasSummary()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -6,7 +6,7 @@
     android:layout_height="324dp"
     app:cardCornerRadius="28dp"
     android:backgroundTint="#E5E7EB"
-    tools:context=".presentation.dialog.kas.DialogAddKasFragment">
+    tools:context=".presentation.dialog.kas.DialogAddOrUpdateKasFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -146,14 +146,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
+            android:clickable="true"
             android:fontFamily="@font/inter"
             android:text="Tambahkan"
-            android:clickable="true"
             android:textColor="#29FF01"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDeskripsiKas" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPickMahasiswa"
