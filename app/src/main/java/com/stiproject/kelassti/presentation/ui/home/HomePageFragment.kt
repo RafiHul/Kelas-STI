@@ -33,12 +33,10 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homePageViewModel.setUser()
-
         homePageViewModel.userData.observe(viewLifecycleOwner){
             if (it != null){
                 binding.textViewUsernameHomePageLoading.viewLoadingTransparant.visibility = View.GONE
-                binding.textViewUsernameHomePage.text = getString(R.string.name_homepage,it.name)
+                binding.textViewUsernameHomePage.text = getString(R.string.name_homepage,it.userData?.name)
                 binding.textViewUsernameHomePage.visibility = View.VISIBLE
                 binding.progressBarMenuItemHomePage.visibility = View.GONE
                 binding.constraintLayoutMenuItemHomePage.visibility = View.VISIBLE
