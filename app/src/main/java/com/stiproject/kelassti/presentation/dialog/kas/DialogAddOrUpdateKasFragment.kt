@@ -89,6 +89,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
                 is DialogKasViewModel.DialogKasState.ApiFailed -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    dismiss()
                 }
                 is DialogKasViewModel.DialogKasState.ValidationDataFailed -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -152,7 +153,6 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                 }
                 DialogKasViewModel.DialogKasState.Idle -> {}
             }
-
         }
 
         binding.textViewBatalKas.setOnClickListener{

@@ -82,7 +82,6 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         kasViewModel.refreshKasSummary()

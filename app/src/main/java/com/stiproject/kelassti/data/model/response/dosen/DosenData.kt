@@ -6,4 +6,8 @@ data class DosenData(
     val name: String,
     val phone: String,
     val whatsapp: String
-)
+){
+    override fun toString(): String {
+        return name
+    }
+}
