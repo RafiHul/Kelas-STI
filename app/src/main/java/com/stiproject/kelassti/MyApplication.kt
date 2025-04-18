@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.work.Configuration
 import com.stiproject.kelassti.data.remote.paging.TransaksiPagingSource
 import com.stiproject.kelassti.data.repository.AuthRepository
+import com.stiproject.kelassti.data.repository.DosenRepository
 import com.stiproject.kelassti.data.repository.GetUserRepository
 import com.stiproject.kelassti.data.repository.KasRepository
 import com.stiproject.kelassti.data.repository.MahasiswaRepository
@@ -61,5 +62,9 @@ class MyApplication: Application(), Configuration.Provider {
         @Provides
         @Singleton
         fun provideTasksRepository() = TasksRepository()
+
+        @Provides
+        @Singleton
+        fun provideDosenRepository() = DosenRepository()
     }
 }
