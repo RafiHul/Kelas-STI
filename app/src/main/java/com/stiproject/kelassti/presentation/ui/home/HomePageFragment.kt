@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.presentation.ui.kas.KasActivity
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentHomePageBinding
 import com.stiproject.kelassti.presentation.adapter.TasksAdapter
-import com.stiproject.kelassti.util.TempData
+import com.stiproject.kelassti.presentation.dialog.home.DialogAddOrUpdateTasksFragment
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomePageFragment : Fragment() {
 
@@ -43,10 +46,18 @@ class HomePageFragment : Fragment() {
             }
         }
 
-        val tasksAdapter = TasksAdapter(TempData.tasksTempItem)
+        val tasksAdapter = TasksAdapter()
         binding.recyclerViewTasks.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
             adapter = tasksAdapter
+        }
+
+        activity?.let {
+            lifecycleScope.launch {
+                homePageViewModel.getTasksPage.collectLatest {
+                    tasksAdapter.submitData(it)
+                }
+            }
         }
 
         binding.recyclerViewAnnoucement.apply {
@@ -57,6 +68,10 @@ class HomePageFragment : Fragment() {
         binding.materialCardViewKas.setOnClickListener{
             val intent = Intent(context, KasActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.imageButtonAddTasks.setOnClickListener{
+            DialogAddOrUpdateTasksFragment().show(parentFragmentManager,"task")
         }
     }
 

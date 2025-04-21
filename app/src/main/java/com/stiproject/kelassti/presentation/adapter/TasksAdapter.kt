@@ -2,39 +2,52 @@ package com.stiproject.kelassti.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.stiproject.kelassti.data.model.response.TasksResponse
+import com.stiproject.kelassti.data.model.response.tasks.TasksData
 import com.stiproject.kelassti.databinding.RecyclerviewitemTasksBinding
 
-class TasksAdapter(val item: MutableList<TasksResponse>): RecyclerView.Adapter<TasksAdapter.MyViewHolder>() {
+class TasksAdapter():
+    PagingDataAdapter<TasksData, TasksAdapter.MyViewHolder>(
+    object : DiffUtil.ItemCallback<TasksData>() {
+        override fun areItemsTheSame(
+            oldItem: TasksData,
+            newItem: TasksData
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    inner class MyViewHolder(val binding: RecyclerviewitemTasksBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(currentItem: TasksResponse){
-            binding.textViewTime.text = currentItem.time
-            binding.textViewNamaDosen.text = currentItem.namaDosen
-            binding.textViewTugas.text = currentItem.tugas
+        override fun areContentsTheSame(
+            oldItem: TasksData,
+            newItem: TasksData
+        ): Boolean {
+            return oldItem == newItem
         }
     }
+    ){
+        inner class MyViewHolder(val binding: RecyclerviewitemTasksBinding): RecyclerView.ViewHolder(binding.root){
+            fun bind(currentItem: TasksData){
+                binding.textViewTime.text = currentItem.deadline.split("T")[0]
+                binding.textViewTugas.text = currentItem.title
+                binding.textViewNamaDosen.text = currentItem.dosen.name
+            }
+        }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyViewHolder {
         return MyViewHolder(
-            RecyclerviewitemTasksBinding.inflate(
-                LayoutInflater.from(parent.context),parent,false
-            )
+            RecyclerviewitemTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
-    }
-
-    override fun getItemCount(): Int {
-        return item.size
     }
 
     override fun onBindViewHolder(
         holder: MyViewHolder,
         position: Int
     ) {
-        holder.bind(item[position])
+        holder.bind(getItem(position)!!)
     }
+
 }
