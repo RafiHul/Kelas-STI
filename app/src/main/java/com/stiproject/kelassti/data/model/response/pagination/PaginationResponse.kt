@@ -1,6 +1,6 @@
 package com.stiproject.kelassti.data.model.response.pagination
 
-data class PaginationTransaksiResponse(
+data class PaginationResponse(
     val Links: List<PaginationLinks>,
     val current: Int,
     val size: Int,
