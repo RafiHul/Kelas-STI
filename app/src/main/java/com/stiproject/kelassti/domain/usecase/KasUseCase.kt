@@ -69,7 +69,7 @@ class KasUseCase @Inject constructor(
         return ApiResult.Success(body.message, body.data)
     }
 
-    suspend fun setKasSummary(data: TransaksiDataArray){
+    fun setKasSummary(data: TransaksiDataArray){
         val pemasukan = calcTotal(data, "pemasukan")!!
         val pengeluaran = calcTotal(data, "pengeluaran")!!
         val total = pemasukan - pengeluaran

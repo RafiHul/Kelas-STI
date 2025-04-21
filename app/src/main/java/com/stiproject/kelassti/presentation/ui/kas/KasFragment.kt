@@ -1,6 +1,7 @@
 package com.stiproject.kelassti.presentation.ui.kas
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,13 +81,17 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
                 }
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        kasViewModel.refreshKasSummary()
-    }
+        parentFragmentManager.setFragmentResultListener("status", viewLifecycleOwner){ _, result ->
 
+            val isAddOrUpdate = result.getBoolean("isAddOrUpdate")
+            Log.d("cekad", isAddOrUpdate.toString())
+
+            if(isAddOrUpdate){
+                kasViewModel.refreshKasSummary()
+            }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -124,7 +125,9 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                                 dismiss()
                             }
 
-                            dialogKasViewModel.updateKasById(data.id, createKasRequest())
+                            dialogKasViewModel.updateKasById(data.id, createKasRequest()){
+                                parentFragmentManager.setFragmentResult("status", bundleOf("isAddOrUpdate" to true))
+                            }
                         }
                     } else {
                         binding.textViewTambahkanKas.text = "Simpan"
@@ -146,9 +149,12 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                                 return@setOnClickListener
                             }
 
-                            dialogKasViewModel.addKasData(createKasRequest())
+                            dialogKasViewModel.addKasData(createKasRequest()){
+                                parentFragmentManager.setFragmentResult("status", bundleOf("isAddOrUpdate" to true))
+                            }
                         }
                     }
+
                 }
                 DialogKasViewModel.DialogKasState.Idle -> {}
             }
@@ -227,6 +233,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
     override fun onDestroy() {
         super.onDestroy()
+        dialogKasViewModel.setAddOrUpdateStateBackToIdle()
         _binding = null
     }
 }

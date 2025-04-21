@@ -50,7 +50,7 @@ class DialogKasViewModel @Inject constructor(
         }
     }
 
-    fun updateKasById(id: Int, kasRequest: KasRequest){
+    fun updateKasById(id: Int, kasRequest: KasRequest, callback: () -> Unit){
         viewModelScope.launch{
 
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
@@ -58,7 +58,10 @@ class DialogKasViewModel @Inject constructor(
             if (validateData is ValidateDataResult.Success){
                 when(val result = kasUseCase.updateKasDataById(id.toString(), kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
-                    is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
+                    is ApiResult.Success<*> -> {
+                        callback()
+                        _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
+                    }
                 }
             } else {
                 _dialogKasState.postValue(DialogKasState.ValidationDataFailed((validateData as ValidateDataResult.Failed).message))
@@ -66,7 +69,7 @@ class DialogKasViewModel @Inject constructor(
         }
     }
 
-    fun addKasData(kasRequest: KasRequest){
+    fun addKasData(kasRequest: KasRequest, callback: () -> Unit){
         viewModelScope.launch{
 
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
@@ -74,7 +77,10 @@ class DialogKasViewModel @Inject constructor(
             if (validateData is ValidateDataResult.Success){
                 when(val result = kasUseCase.postKasData(kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
-                    is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
+                    is ApiResult.Success<*> -> {
+                        callback()
+                        _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
+                    }
                 }
             } else {
                 _dialogKasState.postValue(DialogKasState.ValidationDataFailed((validateData as ValidateDataResult.Failed).message))
@@ -85,6 +91,10 @@ class DialogKasViewModel @Inject constructor(
 
     fun isUserAdmin(): Boolean {
         return userUseCase.cekUserAdmin()
+    }
+
+    fun setAddOrUpdateStateBackToIdle(){
+        _dialogKasState.postValue(DialogKasState.Idle)
     }
 
     sealed class DialogKasState{
