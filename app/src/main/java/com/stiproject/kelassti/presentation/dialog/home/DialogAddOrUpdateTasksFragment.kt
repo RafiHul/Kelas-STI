@@ -16,8 +16,10 @@ import com.stiproject.kelassti.data.model.request.TasksRequest
 import com.stiproject.kelassti.data.model.response.dosen.DosenData
 import com.stiproject.kelassti.databinding.FragmentDialogAddOrUpdateTasksBinding
 import java.util.Calendar
+import com.stiproject.kelassti.R
+import com.stiproject.kelassti.presentation.dialog.kas.DialogAddOrUpdateKasFragment
 
-class DialogAddOrUpdateTasksFragment : DialogFragment() {
+class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_add_or_update_tasks) {
 
     private var _binding: FragmentDialogAddOrUpdateTasksBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +45,9 @@ class DialogAddOrUpdateTasksFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val args = arguments
+        val tasksId = args?.getInt("tasksId")
+
         dialogHomeViewModel.getAllDosen()
         bindingTitleTaskInput = binding.editTextTitleTugas
         bindingDeskripsiTaskInput = binding.editTextDeskripsiTugas
@@ -92,7 +97,7 @@ class DialogAddOrUpdateTasksFragment : DialogFragment() {
             it?.forEach {
                 spinnerAdapter.addAll(it)
             }
-            spinnerAdapter.notifyDataSetChanged() // TODO: if bugs in spinner
+            spinnerAdapter.notifyDataSetChanged()
         }
 
         spinnerNamaDosen.onItemSelectedListener = object : AdapterView. OnItemSelectedListener{
@@ -153,6 +158,7 @@ class DialogAddOrUpdateTasksFragment : DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        dialogHomeViewModel.setHomeStateBackToIdle()
         _binding = null
     }
 

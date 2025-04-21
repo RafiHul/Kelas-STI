@@ -53,6 +53,10 @@ class DialogHomeViewModel @Inject constructor(
         }
     }
 
+    fun setHomeStateBackToIdle(){
+        _dialogHomeState.postValue(DialogHomeState.Idle)
+    }
+
     sealed class DialogHomeState{
         //        object Loading: DialogHomeState()
         object Idle: DialogHomeState()
