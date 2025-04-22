@@ -26,6 +26,8 @@ class DialogKasViewModel @Inject constructor(
     private val _dialogKasState = MutableLiveData<DialogKasState>(DialogKasState.Idle)
     val dialogKasState = _dialogKasState
 
+    val searchMahasiswaByNameResult = mahasiswaUseCase.searchMahasiswaByNameResult
+
     fun initialize(kasId: Int?){
         if (kasId != null){
             getKasDataById(kasId.toString())
@@ -35,9 +37,9 @@ class DialogKasViewModel @Inject constructor(
 
     }
 
-    fun getMahasiswaByName(name: String, onResult: (ApiResult) -> Unit) {
+    fun searchMahasiswaByName(name: String) {
         viewModelScope.launch{
-            onResult(mahasiswaUseCase.getMahasiswaByName(name))
+            mahasiswaUseCase.updateSearchQuery(name)
         }
     }
 

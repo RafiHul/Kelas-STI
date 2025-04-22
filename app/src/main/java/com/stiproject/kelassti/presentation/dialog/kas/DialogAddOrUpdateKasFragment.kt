@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.R
@@ -21,6 +22,7 @@ import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataArray
 import com.stiproject.kelassti.presentation.adapter.PickMahasiswaAdapter
 import com.stiproject.kelassti.util.ApiResult
+import kotlinx.coroutines.launch
 import kotlin.toString
 
 class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add_transaksi), AdapterView.OnItemSelectedListener {
@@ -70,6 +72,21 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
         recyclerViewPickMahasiswa = binding.recyclerViewPickMahasiswa.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter = pickMahasiswaAdapter
+        }
+
+        lifecycleScope.launch{
+            dialogKasViewModel.searchMahasiswaByNameResult.collect{
+                when(it){
+                    is ApiResult.Failed -> {
+                        recyclerViewPickMahasiswa.visibility = View.GONE
+//                            Toast.makeText(context, it.messageFailed.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is ApiResult.Success<*> -> {
+                        pickMahasiswaAdapter.differ.submitList(it.data as MahasiswaDataArray)
+                        recyclerViewPickMahasiswa.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
 
         bindingNominalKasInput = binding.editTextTextNominalKas
@@ -171,23 +188,9 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // TODO: ini ubah pakai flow flatmaplatest dan delay untuk mengurangi beban quary database
-                dialogKasViewModel.getMahasiswaByName(newText.toString()){ apiResult ->
-                    when(apiResult){
-                        is ApiResult.Failed -> {
-                            recyclerViewPickMahasiswa.visibility = View.GONE
-//                            Toast.makeText(context, apiResult.messageFailed.message, Toast.LENGTH_SHORT).show()
-                        }
-                        is ApiResult.Success<*> -> {
-                            pickMahasiswaAdapter.differ.submitList(apiResult.data as MahasiswaDataArray)
-                            recyclerViewPickMahasiswa.visibility = View.VISIBLE
-                        }
-                    }
-                }
-
+                dialogKasViewModel.searchMahasiswaByName(newText.toString())
                 return false
             }
-
         })
 
 

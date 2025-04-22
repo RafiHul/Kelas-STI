@@ -28,5 +28,5 @@ class JwtTokenStorage @Inject constructor(
 
     fun getJwt() = userState.userState.value?.jwtToken
 
-    fun getJwtBearer() = "Bearer ${userState.userState.value?.jwtToken}" // TODO: some jwt bugs
+    fun getJwtBearer() = "Bearer ${userState.userState.value?.jwtToken}"
 }
