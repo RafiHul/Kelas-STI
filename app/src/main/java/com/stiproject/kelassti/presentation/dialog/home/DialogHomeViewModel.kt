@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.data.model.request.TasksRequest
 import com.stiproject.kelassti.data.model.response.dosen.DosenDataArray
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
+import com.stiproject.kelassti.data.model.response.kas.KasData
 import com.stiproject.kelassti.domain.model.ValidateDataResult
 import com.stiproject.kelassti.domain.usecase.DosenUseCase
 import com.stiproject.kelassti.domain.usecase.TasksUseCase
@@ -60,7 +60,7 @@ class DialogHomeViewModel @Inject constructor(
     sealed class DialogHomeState{
         //        object Loading: DialogHomeState()
         object Idle: DialogHomeState()
-        data class ApiGetTasksSuccess(val data: TransaksiData? = null): DialogHomeState()
+        data class ApiGetTasksSuccess(val data: KasData? = null): DialogHomeState()
         data class ApiPostTasksSuccess(val message: String): DialogHomeState()
         data class ApiFailed(val message: String): DialogHomeState()
         data class ValidationDataFailed(val message: String): DialogHomeState()

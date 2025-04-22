@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentKasBinding
 import com.stiproject.kelassti.presentation.dialog.DialogAuthorisasiFragment
-import com.stiproject.kelassti.presentation.adapter.TransaksiAdapter
+import com.stiproject.kelassti.presentation.adapter.KasAdapter
 import com.stiproject.kelassti.presentation.dialog.kas.DialogAddOrUpdateKasFragment
 import com.stiproject.kelassti.util.convertToRupiahFormat
 import com.stiproject.kelassti.util.handleToastApiResult
@@ -56,7 +56,7 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
             binding.textViewPengeluaranKas.visibility = View.VISIBLE
         }
 
-        val transaksiAdapter = TransaksiAdapter(requireContext()) {
+        val kasAdapter = KasAdapter(requireContext()) {
             DialogAddOrUpdateKasFragment.Companion.newInstance(it)
                 .show(parentFragmentManager, "Transaksi Edit")
         }
@@ -71,13 +71,13 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
 
         binding.recyclerViewTransaksi.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = transaksiAdapter
+            adapter = kasAdapter
         }
 
         activity?.let {
             lifecycleScope.launch {
                 kasViewModel.getKasPage.collectLatest {
-                    transaksiAdapter.submitData(it)
+                    kasAdapter.submitData(it)
                 }
             }
         }

@@ -254,6 +254,16 @@
             app:layout_constraintStart_toStartOf="@+id/constraintLayoutMenuItemHomePage"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayoutMenuItemHomePage" />
 
+        <ImageButton
+            android:id="@+id/imageButtonAddTasks"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="#CFBDFE"
+            android:src="@drawable/baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="@+id/textView15"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayoutMenuItemHomePage"
+            app:layout_constraintTop_toTopOf="@+id/textView15" />
+
         <ProgressBar
             android:id="@+id/progressBarMenuItemHomePage"
             style="?android:attr/progressBarStyle"

@@ -7,11 +7,11 @@ class KasRepository() {
 
     private val kasService = RetrofitInstance.getTransaksiService
 
-    suspend fun getAllKasData() = kasService.getAllTransaksi()
+    suspend fun getAllKasData() = kasService.getAllKas()
 
-    suspend fun addKasData(jwtToken: String, kasRequest: KasRequest) = kasService.postTransaksi(jwtToken, kasRequest)
+    suspend fun addKasData(jwtToken: String, kasRequest: KasRequest) = kasService.postKas(jwtToken, kasRequest)
 
-    suspend fun getKasDataById(id: String) = kasService.getTransaksiById(id)
+    suspend fun getKasDataById(id: String) = kasService.getKasById(id)
 
-    suspend fun updateKasDataById(id: String, jwtToken: String, kasRequest: KasRequest) = kasService.updateTransaksiById(id, jwtToken, kasRequest)
+    suspend fun updateKasDataById(id: String, jwtToken: String, kasRequest: KasRequest) = kasService.updateKasById(id, jwtToken, kasRequest)
 }

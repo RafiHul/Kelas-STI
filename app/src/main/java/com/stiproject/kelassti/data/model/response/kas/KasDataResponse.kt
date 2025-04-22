@@ -1,9 +1,9 @@
-package com.stiproject.kelassti.data.model.response.transaksi
+package com.stiproject.kelassti.data.model.response.kas
 
 import com.stiproject.kelassti.data.model.response.pagination.PaginationResponse
 
-data class TransaksiDataResponse(
+data class KasDataResponse(
     val message: String,
-    val data: TransaksiDataArray,
+    val data: KasDataArray,
     val page: PaginationResponse
 )

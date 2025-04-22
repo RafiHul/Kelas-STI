@@ -3,7 +3,7 @@ package com.stiproject.kelassti
 import android.app.Application
 import androidx.work.Configuration
 import com.stiproject.kelassti.data.remote.paging.TasksPagingSource
-import com.stiproject.kelassti.data.remote.paging.TransaksiPagingSource
+import com.stiproject.kelassti.data.remote.paging.KasPagingSource
 import com.stiproject.kelassti.data.repository.AuthRepository
 import com.stiproject.kelassti.data.repository.DosenRepository
 import com.stiproject.kelassti.data.repository.GetUserRepository
@@ -42,7 +42,7 @@ class MyApplication: Application(), Configuration.Provider {
 
         @Provides
         @Singleton
-        fun provideTransaksiPagingSource() = TransaksiPagingSource()
+        fun provideTransaksiPagingSource() = KasPagingSource()
 
         @Provides
         @Singleton

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiproject.kelassti.data.model.request.KasRequest
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
+import com.stiproject.kelassti.data.model.response.kas.KasData
 import com.stiproject.kelassti.domain.model.ValidateDataResult
 import com.stiproject.kelassti.domain.usecase.GetUserUseCase
 import com.stiproject.kelassti.domain.usecase.KasUseCase
@@ -45,7 +45,7 @@ class DialogKasViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = kasUseCase.getKasDataById(id)) {
                 is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
-                is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiGetSuccess(result.data as TransaksiData))
+                is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiGetSuccess(result.data as KasData))
             }
         }
     }
@@ -100,7 +100,7 @@ class DialogKasViewModel @Inject constructor(
     sealed class DialogKasState{
 //        object Loading: DialogKasState()
         object Idle: DialogKasState()
-        data class ApiGetSuccess(val data: TransaksiData? = null): DialogKasState()
+        data class ApiGetSuccess(val data: KasData? = null): DialogKasState()
         data class ApiPostSuccess(val message: String): DialogKasState()
         data class ApiFailed(val message: String): DialogKasState()
         data class ValidationDataFailed(val message: String): DialogKasState()

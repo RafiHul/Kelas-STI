@@ -1,14 +1,13 @@
 package com.stiproject.kelassti.domain.usecase
 
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.stiproject.kelassti.data.local.JwtTokenStorage
 import com.stiproject.kelassti.data.model.request.KasRequest
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiData
-import com.stiproject.kelassti.data.model.response.transaksi.TransaksiDataArray
-import com.stiproject.kelassti.data.remote.paging.TransaksiPagingSource
+import com.stiproject.kelassti.data.model.response.kas.KasData
+import com.stiproject.kelassti.data.model.response.kas.KasDataArray
+import com.stiproject.kelassti.data.remote.paging.KasPagingSource
 import com.stiproject.kelassti.data.repository.KasRepository
 import com.stiproject.kelassti.domain.model.KasSummary
 import com.stiproject.kelassti.util.ApiResult
@@ -26,7 +25,7 @@ import kotlin.collections.map
 class KasUseCase @Inject constructor(
     private val repo: KasRepository,
     private val jwtTokenStorage: JwtTokenStorage,
-    private val kasDataPagingSource: TransaksiPagingSource
+    private val kasDataPagingSource: KasPagingSource
 ){
 
     private val userJwtToken = jwtTokenStorage.getJwtBearer()
@@ -42,7 +41,7 @@ class KasUseCase @Inject constructor(
         _refreshTrigger.value = true
     }
 
-    fun getKasPage(): Flow<PagingData<TransaksiData>> {
+    fun getKasPage(): Flow<PagingData<KasData>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -69,7 +68,7 @@ class KasUseCase @Inject constructor(
         return ApiResult.Success(body.message, body.data)
     }
 
-    fun setKasSummary(data: TransaksiDataArray){
+    fun setKasSummary(data: KasDataArray){
         val pemasukan = calcTotal(data, "pemasukan")!!
         val pengeluaran = calcTotal(data, "pengeluaran")!!
         val total = pemasukan - pengeluaran
@@ -122,7 +121,7 @@ class KasUseCase @Inject constructor(
         return ApiResult.Success(body.message,body.data)
     }
 
-    private fun calcTotal(data: TransaksiDataArray?, type: String): Long? {
+    private fun calcTotal(data: KasDataArray?, type: String): Long? {
         var result1 = data?.filter {
             it.type == type
         }

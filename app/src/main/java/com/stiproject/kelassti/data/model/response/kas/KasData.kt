@@ -1,6 +1,6 @@
-package com.stiproject.kelassti.data.model.response.transaksi
+package com.stiproject.kelassti.data.model.response.kas
 
-data class TransaksiData(
+data class KasData(
     val id: Int,
     val NIM_mahasiswa: Int,
     val nama: String,
