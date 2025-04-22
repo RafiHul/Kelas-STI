@@ -201,7 +201,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardViewProfie"
+                android:id="@+id/materialCardViewStudents"
                 android:layout_width="156dp"
                 android:layout_height="78dp"
                 android:layout_marginStart="165dp"
