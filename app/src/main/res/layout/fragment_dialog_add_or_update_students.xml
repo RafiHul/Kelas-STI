@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="380dp"
+    android:layout_height="324dp"
+    app:cardCornerRadius="28dp"
+    android:backgroundTint="#E5E7EB"
+    tools:context=".presentation.dialog.students.DialogAddOrUpdateStudentsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewHeaderStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/inter"
+            android:text="Tambah Mahasiswa"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewAddNimIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/baseline_people_24"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeaderStudents"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeaderStudents" />
+
+
+        <EditText
+            android:id="@+id/editTextNIMMahasiswa"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/input_add_transaksi"
+            android:ems="10"
+            android:fontFamily="@font/inter"
+            android:hint="Nim"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="14sp"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAddNimIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAddNimIcon"
+            app:layout_constraintTop_toTopOf="@+id/imageViewAddNimIcon"/>
+
+        <ImageView
+            android:id="@+id/imageViewAddnameIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/h1_svgrepo_com"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeaderStudents"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewAddNimIcon" />
+
+        <EditText
+            android:id="@+id/editTextNameStudents"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/input_add_transaksi"
+            android:ems="10"
+            android:fontFamily="@font/inter"
+            android:hint="Name"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAddnameIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAddnameIcon"
+            app:layout_constraintTop_toTopOf="@+id/imageViewAddnameIcon" />
+
+        <ImageView
+            android:id="@+id/imageViewAddNomorTeleponIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/phone_office_svgrepo_com"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeaderStudents"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewAddnameIcon" />
+
+        <EditText
+            android:id="@+id/editTextNomorTeleponStudents"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/input_add_transaksi"
+            android:ems="10"
+            android:fontFamily="@font/inter"
+            android:hint="Nomor Telepon"
+            android:inputType="phone"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewAddNomorTeleponIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewAddNomorTeleponIcon"
+            app:layout_constraintTop_toTopOf="@+id/imageViewAddNomorTeleponIcon" />
+
+        <TextView
+            android:id="@+id/textViewBatalAddStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/inter"
+            android:text="Batal"
+            android:clickable="true"
+            android:textColor="@color/pengeluaran_kas"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTambahkanStudents"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTambahkanStudents" />
+
+        <TextView
+            android:id="@+id/textViewTambahkanStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:clickable="true"
+            android:fontFamily="@font/inter"
+            android:text="Tambahkan"
+            android:textColor="#29FF01"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNomorTeleponStudents" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
