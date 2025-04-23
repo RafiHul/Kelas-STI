@@ -1,5 +1,5 @@
 package com.stiproject.kelassti.data.model.response
 
-data class ApiErrorResponse(
-    val message: String
+data class ApiErrorResponse<T>(
+    val message: T
 )
