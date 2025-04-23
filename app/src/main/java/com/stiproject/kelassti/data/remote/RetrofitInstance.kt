@@ -3,6 +3,7 @@ package com.stiproject.kelassti.data.remote
 import com.stiproject.kelassti.data.remote.api.DosenApi
 import com.stiproject.kelassti.data.remote.api.TasksApi
 import com.stiproject.kelassti.data.remote.api.KasApi
+import com.stiproject.kelassti.data.remote.api.MahasiswaApi
 import com.stiproject.kelassti.data.remote.api.UserApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,5 +30,9 @@ object RetrofitInstance {
 
     val getDosenService: DosenApi by lazy {
         retrofit.create(DosenApi::class.java)
+    }
+
+    val getMahasiswaService: MahasiswaApi by lazy {
+        retrofit.create(MahasiswaApi::class.java)
     }
 }

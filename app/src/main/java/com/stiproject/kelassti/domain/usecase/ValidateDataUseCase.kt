@@ -1,5 +1,7 @@
 package com.stiproject.kelassti.domain.usecase
 
+import androidx.core.text.isDigitsOnly
+import com.stiproject.kelassti.data.model.request.AddMahasiswaRequest
 import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.request.TasksRequest
 import com.stiproject.kelassti.domain.model.ValidateDataResult
@@ -45,6 +47,24 @@ class ValidateDataUseCase @Inject constructor(){
 
         if(tasksRequest.title == ""){
             return ValidateDataResult.Failed("masukkan title")
+        }
+
+        return ValidateDataResult.Success
+    }
+
+    fun validateAddMahasiswaRequest(req: AddMahasiswaRequest): ValidateDataResult {
+
+
+        if(req.NIM == 0){
+            return ValidateDataResult.Failed("harap isi NIM dengan benar")
+        }
+
+        if(req.name.isEmpty()){
+            return ValidateDataResult.Failed("harap isi nama dengan benar")
+        }
+
+        if(req.phone.isEmpty()|| !(req.phone.isDigitsOnly())){
+            return ValidateDataResult.Failed("harap isi nomor dengan benar")
         }
 
         return ValidateDataResult.Success

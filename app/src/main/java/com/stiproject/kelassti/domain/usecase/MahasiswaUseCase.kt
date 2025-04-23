@@ -1,7 +1,10 @@
 package com.stiproject.kelassti.domain.usecase
 
+import com.stiproject.kelassti.data.local.JwtTokenStorage
+import com.stiproject.kelassti.data.model.request.AddMahasiswaRequest
 import com.stiproject.kelassti.data.repository.MahasiswaRepository
 import com.stiproject.kelassti.util.ApiResult
+import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class MahasiswaUseCase @Inject constructor(
-    private val repo: MahasiswaRepository
+    private val repo: MahasiswaRepository,
+    private val jwtTokenStorage: JwtTokenStorage
 ){
 
     private val _searchQuery = MutableStateFlow("")
@@ -39,5 +43,37 @@ class MahasiswaUseCase @Inject constructor(
         }
 
         return flowOf(ApiResult.Success(body.message, body.data))
+    }
+
+    suspend fun getAllMahasiswa(): ApiResult {
+        val response = repo.getAllMahasiswa()
+        val body = response.body()
+        val errorBody = response.errorBody()
+
+        if(!response.isSuccessful){
+            return ApiResult.Failed(errorBody.parseErrorMessageJsonToString())
+        }
+
+        if (body == null){
+            return ApiResult.Failed("Gagal Memuat data mahasiswa")
+        }
+
+        return ApiResult.Success(body.message, body.data)
+    }
+
+    suspend fun addMahasiswa(addMahasiswaRequest: AddMahasiswaRequest): ApiResult {
+        val response = repo.addMahasiswa(jwtTokenStorage.getJwtBearer(), addMahasiswaRequest)
+        val body = response.body()
+        val errBody = response.errorBody()
+
+        if(!response.isSuccessful){
+            return ApiResult.Failed(errBody.parseErrorMessageJsonToString())
+        }
+
+        if (body == null){
+            return ApiResult.Failed("Gagal Menambahkan data")
+        }
+
+        return ApiResult.Success("Berhasil menambahkan data", null)
     }
 }

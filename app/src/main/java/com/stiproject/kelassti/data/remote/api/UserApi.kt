@@ -12,7 +12,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UserApi {
@@ -25,11 +24,6 @@ interface UserApi {
     suspend fun userLogin(
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
-
-    @GET("/mahasiswa/{id}")
-    suspend fun getMahasiswaByNim(
-        @Path("id") id: String
-    ): Response<MahasiswaDataResponse>
 
     @GET("/users/profile")
     suspend fun getUsersByJwt(
