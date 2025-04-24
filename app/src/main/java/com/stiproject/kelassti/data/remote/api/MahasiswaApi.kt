@@ -1,13 +1,14 @@
 package com.stiproject.kelassti.data.remote.api
 
-import com.stiproject.kelassti.data.model.request.AddMahasiswaRequest
-import com.stiproject.kelassti.data.model.request.KasRequest
+import com.stiproject.kelassti.data.model.request.AddOrUpdateMahasiswaRequest
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaAllDataResponse
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,11 +26,25 @@ interface MahasiswaApi {
     @POST("/mahasiswa")
     suspend fun addMahasiswa(
         @Header("Authorization") jwt: String,
-        @Body addMahasiswaRequest: AddMahasiswaRequest
+        @Body addOrUpdateMahasiswaRequest: AddOrUpdateMahasiswaRequest
     ): Response<MahasiswaDataResponse>
 
-    @GET("/mahasiswa/{id}")
+    @GET("/mahasiswa/{NIM}")
     suspend fun getMahasiswaByNim(
-        @Path("id") id: String
+        @Path("NIM") id: String
+    ): Response<MahasiswaDataResponse>
+
+
+    @DELETE("/mahasiswa/{NIM}")
+    suspend fun deleteMahasiswa(
+        @Header("Authorization") jwt: String,
+        @Path("NIM") nim: String
+    ): Response<MahasiswaDataResponse>
+
+    @PATCH("/mahasiswa/{NIM}")
+    suspend fun updateMahasiswa(
+        @Header("Authorization") jwt: String,
+        @Path("NIM") nim: String,
+        @Body addOrUpdateMahasiswaRequest: AddOrUpdateMahasiswaRequest
     ): Response<MahasiswaDataResponse>
 }

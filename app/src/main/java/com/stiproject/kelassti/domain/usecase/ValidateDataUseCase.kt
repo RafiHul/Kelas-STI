@@ -1,7 +1,7 @@
 package com.stiproject.kelassti.domain.usecase
 
 import androidx.core.text.isDigitsOnly
-import com.stiproject.kelassti.data.model.request.AddMahasiswaRequest
+import com.stiproject.kelassti.data.model.request.AddOrUpdateMahasiswaRequest
 import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.request.TasksRequest
 import com.stiproject.kelassti.domain.model.ValidateDataResult
@@ -52,7 +52,7 @@ class ValidateDataUseCase @Inject constructor(){
         return ValidateDataResult.Success
     }
 
-    fun validateAddMahasiswaRequest(req: AddMahasiswaRequest): ValidateDataResult {
+    fun validateAddMahasiswaRequest(req: AddOrUpdateMahasiswaRequest): ValidateDataResult {
 
 
         if(req.NIM == 0){

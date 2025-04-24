@@ -1,19 +1,16 @@
 package com.stiproject.kelassti.presentation.dialog.students
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.stiproject.kelassti.R
-import com.stiproject.kelassti.data.model.request.AddMahasiswaRequest
+import com.stiproject.kelassti.data.model.request.AddOrUpdateMahasiswaRequest
 import com.stiproject.kelassti.databinding.FragmentDialogAddOrUpdateStudentsBinding
-import com.stiproject.kelassti.presentation.dialog.kas.DialogAddOrUpdateKasFragment
 
 class DialogAddOrUpdateStudentsFragment : DialogFragment() {
 
@@ -34,29 +31,59 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args = arguments
+        Log.d("ceknim", args?.getString("mahasiswaNim").toString())
+        dialogStudentsViewModel.initelize(args?.getString("mahasiswaNim"))
+
         dialogStudentsViewModel.dialogStudentsState.observe(viewLifecycleOwner){
             when(it){
-                is DialogStudentsViewModel.DialogStudentsState.ApiAddStudentsFailed -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                is DialogStudentsViewModel.DialogStudentsState.ApiAddOrUpdateStudentsFailed -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 is DialogStudentsViewModel.DialogStudentsState.ValidationDataFailed -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                is DialogStudentsViewModel.DialogStudentsState.ApiAddStudentsSuccess -> {
+                is DialogStudentsViewModel.DialogStudentsState.ApiAddOrUpdateStudentsSuccess -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                     parentFragmentManager.setFragmentResult("statusAddStudents", bundleOf("isSuccess" to true))
                     dismiss()
                 }
+                is DialogStudentsViewModel.DialogStudentsState.GetStudentsFailed -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+                is DialogStudentsViewModel.DialogStudentsState.GetStudentsSuccess -> {
+                    val mahasiswaData = it.mahasiswaData
+                    if(mahasiswaData != null){
+                        binding.editTextNIMMahasiswa.setText(String.format(mahasiswaData.NIM.toString()))
+                        binding.editTextNIMMahasiswa.visibility = View.GONE
+                        binding.imageViewAddNimIcon.visibility = View.GONE
+                        binding.textViewDeleteStudents.visibility = View.VISIBLE
+                        binding.textViewTambahkanStudents.text = "Update"
 
-                is DialogStudentsViewModel.DialogStudentsState.ApiGetTasksSuccess -> {}
+                        binding.editTextNomorTeleponStudents.setText(mahasiswaData.phone)
+                        binding.editTextNameStudents.setText(mahasiswaData.name)
+
+                        binding.textViewTambahkanStudents.setOnClickListener{
+                            dialogStudentsViewModel.updateStudents(createAddOrUpdateRequest())
+                        }
+
+                        binding.textViewDeleteStudents.setOnClickListener{
+                            dialogStudentsViewModel.deleteStudents(mahasiswaData.NIM.toString())
+                        }
+
+                    } else {
+                        binding.textViewTambahkanStudents.text = "Tambahkan"
+
+                        binding.textViewTambahkanStudents.setOnClickListener{
+                            dialogStudentsViewModel.addStudents(createAddOrUpdateRequest())
+                        }
+                    }
+                }
+
                 DialogStudentsViewModel.DialogStudentsState.Idle -> {}
             }
         }
 
-        binding.textViewTambahkanStudents.setOnClickListener{
-            dialogStudentsViewModel.addStudents(AddMahasiswaRequest(
-                binding.editTextNIMMahasiswa.text.toString().let { if(it.isEmpty()) 0 else it.toInt() },
-                binding.editTextNameStudents.text.toString(),
-                binding.editTextNomorTeleponStudents.text.toString()
-            ))
+        binding.textViewBatalAddStudents.setOnClickListener{
+            dismiss()
         }
-
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
@@ -68,11 +95,17 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
         )
     }
 
+    fun createAddOrUpdateRequest() = AddOrUpdateMahasiswaRequest(
+        binding.editTextNIMMahasiswa.text.toString().let { if(it.isEmpty()) 0 else it.toInt() },
+        binding.editTextNameStudents.text.toString(),
+        binding.editTextNomorTeleponStudents.text.toString()
+    )
+
     companion object{
-        fun newInstance(kasId: Int): DialogAddOrUpdateKasFragment {
+        fun newInstance(mahasiswaNim: String): DialogAddOrUpdateStudentsFragment {
             val args = Bundle()
-            val fragment = DialogAddOrUpdateKasFragment()
-            args.putInt("kasId",kasId)
+            val fragment = DialogAddOrUpdateStudentsFragment()
+            args.putString("mahasiswaNim",mahasiswaNim)
             fragment.arguments = args
             return fragment
         }

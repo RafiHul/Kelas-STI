@@ -34,7 +34,9 @@ class StudentsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val studentsAdapter = StudentsAdapter()
+        val studentsAdapter = StudentsAdapter{
+            DialogAddOrUpdateStudentsFragment.newInstance(it).show(parentFragmentManager, "updateStudents")
+        }
 
         binding.recyclerViewStudents.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -124,6 +124,19 @@
             app:layout_constraintEnd_toStartOf="@+id/textViewTambahkanStudents" />
 
         <TextView
+            android:id="@+id/textViewDeleteStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/inter"
+            android:text="Delete"
+            android:textColor="@color/pengeluaran_kas"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewBatalAddStudents"
+            app:layout_constraintStart_toStartOf="@+id/imageViewAddNomorTeleponIcon" />
+
+        <TextView
             android:id="@+id/textViewTambahkanStudents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

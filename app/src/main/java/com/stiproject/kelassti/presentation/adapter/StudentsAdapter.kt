@@ -8,13 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
 import com.stiproject.kelassti.databinding.RecyclerviewitemStudentsBinding
 
-class StudentsAdapter: RecyclerView.Adapter<StudentsAdapter.MyViewHolder>() {
+class StudentsAdapter(val onClickItem: (String) -> Unit): RecyclerView.Adapter<StudentsAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val binding: RecyclerviewitemStudentsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: MahasiswaData){
+            val nim = String.format(currentItem.NIM.toString())
             binding.textViewNameStudents.text = currentItem.name
-            binding.textViewNimStudents.text = String.format(currentItem.NIM.toString())
+            binding.textViewNimStudents.text = nim
             binding.textViewNomorStudents.text = currentItem.phone
+
+            binding.root.setOnClickListener{
+                onClickItem(nim)
+            }
         }
     }
 
