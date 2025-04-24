@@ -57,9 +57,11 @@ fun Array<String>.acakKelompok(size: Int): MutableList<MutableList<String>> {
 }
 
 fun ResponseBody?.parseErrorMessageJsonToString(): String {
+    val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)
     return try {
-        val errorResponse = Gson().fromJson(this?.string(), ApiErrorResponse::class.java)
-        (errorResponse.message as ArrayList<*>).joinToString(", ") // TODO: need another error case from api
+        errorResponse.message as String
+    } catch (e: ClassCastException){
+        (errorResponse.message as ArrayList<*>).joinToString(", ")
     } catch (e: Exception){
         "Terjadi Kesalahan Saat Memproses Response: ${e.message}" // TODO: mungkin error nya akan terkirim ke server ?
     }
