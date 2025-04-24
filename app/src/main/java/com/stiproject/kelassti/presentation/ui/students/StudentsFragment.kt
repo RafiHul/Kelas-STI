@@ -1,16 +1,15 @@
 package com.stiproject.kelassti.presentation.ui.students
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentStudentsBinding
 import com.stiproject.kelassti.presentation.adapter.StudentsAdapter
 import com.stiproject.kelassti.presentation.dialog.students.DialogAddOrUpdateStudentsFragment
@@ -56,7 +55,7 @@ class StudentsFragment : Fragment() {
                 is StudentsViewModel.MahasiswaState.SuccessGetData -> {
                     lifecycleScope.launch{
                         binding.textViewTotalMahasiswa.text = "${it.data?.size} Orang"
-                        studentsAdapter.differ.submitList(it.data)
+                        studentsAdapter.submitNewList(it.data)
                     }
                 }
                 StudentsViewModel.MahasiswaState.Idle -> {}
@@ -73,6 +72,18 @@ class StudentsFragment : Fragment() {
         binding.imageButtonAddStudents.setOnClickListener{
             DialogAddOrUpdateStudentsFragment().show(parentFragmentManager, "addStudents")
         }
+
+        binding.searchViewStudents.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                studentsAdapter.filter?.filter(newText)
+                return false
+            }
+
+        })
     }
 
     override fun onDestroy() {

@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainViewModel.getUsersByJwt {
-            Log.d("cek main", it.toString())
             when (it) {
                 is ApiResult.Failed -> {
                     Toast.makeText(this@MainActivity, it.messageFailed, Toast.LENGTH_SHORT).show()

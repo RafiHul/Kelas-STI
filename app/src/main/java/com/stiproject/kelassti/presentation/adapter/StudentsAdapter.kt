@@ -2,13 +2,16 @@ package com.stiproject.kelassti.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
+import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaDataArray
 import com.stiproject.kelassti.databinding.RecyclerviewitemStudentsBinding
 
-class StudentsAdapter(val onClickItem: (String) -> Unit): RecyclerView.Adapter<StudentsAdapter.MyViewHolder>() {
+class StudentsAdapter(val onClickItem: (String) -> Unit): RecyclerView.Adapter<StudentsAdapter.MyViewHolder>(), Filterable {
 
     inner class MyViewHolder(val binding: RecyclerviewitemStudentsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentItem: MahasiswaData){
@@ -40,6 +43,12 @@ class StudentsAdapter(val onClickItem: (String) -> Unit): RecyclerView.Adapter<S
     }
 
     val differ = AsyncListDiffer(this, diffUtil)
+    var originalData = emptyList<MahasiswaData>()
+
+    fun submitNewList(newData: MahasiswaDataArray?){
+        originalData = newData as List<MahasiswaData>
+        differ.submitList(newData)
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,5 +68,26 @@ class StudentsAdapter(val onClickItem: (String) -> Unit): RecyclerView.Adapter<S
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    override fun getFilter(): Filter? {
+        return object : Filter(){
+            override fun performFiltering(constraint: CharSequence?): FilterResults? {
+                val filter = if(constraint == null || constraint.isEmpty()){
+                    originalData
+                } else {
+                    differ.currentList.filter { it.name.lowercase().contains(constraint) }
+                }
+                return FilterResults().apply { values = filter }
+            }
+
+            override fun publishResults(
+                constraint: CharSequence?,
+                results: FilterResults?
+            ) {
+                differ.submitList(results?.values as List<MahasiswaData>)
+            }
+
+        }
     }
 }

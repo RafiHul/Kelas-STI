@@ -75,7 +75,24 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewTopStudents" />" />
+            app:layout_constraintTop_toBottomOf="@+id/searchViewStudents" />
+
+        <SearchView
+            android:id="@+id/searchViewStudents"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/input_add_transaksi"
+            android:ems="10"
+            android:focusable="true"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp"
+            android:queryHint="Cari mahasiswa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewTopStudents" />
 
         <ImageButton
             android:id="@+id/imageButtonAddStudents"
