@@ -96,7 +96,7 @@ class MahasiswaUseCase @Inject constructor(
     }
 
     suspend fun deleteMahasiswa(nim: String): ApiResult {
-        val response = repo.deleteMahasiswa(jwtBearer, "123")
+        val response = repo.deleteMahasiswa(jwtBearer, nim)
         val errBody = response.errorBody()
 
         if(!response.isSuccessful){

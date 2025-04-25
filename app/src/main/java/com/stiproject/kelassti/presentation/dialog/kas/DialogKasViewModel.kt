@@ -52,7 +52,7 @@ class DialogKasViewModel @Inject constructor(
         }
     }
 
-    fun updateKasById(id: Int, kasRequest: KasRequest, callback: () -> Unit){
+    fun updateKasById(id: Int, kasRequest: KasRequest){
         viewModelScope.launch{
 
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
@@ -61,7 +61,6 @@ class DialogKasViewModel @Inject constructor(
                 when(val result = kasUseCase.updateKasDataById(id.toString(), kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
                     is ApiResult.Success<*> -> {
-                        callback()
                         _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
                     }
                 }
@@ -71,7 +70,7 @@ class DialogKasViewModel @Inject constructor(
         }
     }
 
-    fun addKasData(kasRequest: KasRequest, callback: () -> Unit){
+    fun addKasData(kasRequest: KasRequest){
         viewModelScope.launch{
 
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
@@ -80,7 +79,6 @@ class DialogKasViewModel @Inject constructor(
                 when(val result = kasUseCase.postKasData(kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
                     is ApiResult.Success<*> -> {
-                        callback()
                         _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
                     }
                 }

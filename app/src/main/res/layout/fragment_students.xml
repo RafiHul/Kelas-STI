@@ -108,9 +108,10 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="500dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
             android:background="@color/white"
             app:cardCornerRadius="10dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageButtonAddStudents"
             app:layout_constraintStart_toStartOf="@+id/textViewMahasiswaStudents"

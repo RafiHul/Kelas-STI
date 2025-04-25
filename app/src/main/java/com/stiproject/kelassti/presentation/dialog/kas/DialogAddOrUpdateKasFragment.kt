@@ -114,6 +114,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
                 is DialogKasViewModel.DialogKasState.ApiPostSuccess -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.setFragmentResult("status", bundleOf("isAddOrUpdate" to true))
                     dismiss()
                 }
 
@@ -142,9 +143,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                                 dismiss()
                             }
 
-                            dialogKasViewModel.updateKasById(data.id, createKasRequest()){
-                                parentFragmentManager.setFragmentResult("status", bundleOf("isAddOrUpdate" to true))
-                            }
+                            dialogKasViewModel.updateKasById(data.id, createKasRequest())
                         }
                     } else {
                         binding.textViewTambahkanKas.text = "Simpan"
@@ -166,9 +165,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                                 return@setOnClickListener
                             }
 
-                            dialogKasViewModel.addKasData(createKasRequest()){
-                                parentFragmentManager.setFragmentResult("status", bundleOf("isAddOrUpdate" to true))
-                            }
+                            dialogKasViewModel.addKasData(createKasRequest())
                         }
                     }
 

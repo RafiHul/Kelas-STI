@@ -14,6 +14,7 @@ import com.stiproject.kelassti.R
 import com.stiproject.kelassti.databinding.FragmentHomePageBinding
 import com.stiproject.kelassti.presentation.adapter.TasksAdapter
 import com.stiproject.kelassti.presentation.dialog.home.DialogAddOrUpdateTasksFragment
+import com.stiproject.kelassti.presentation.ui.students.StudentsActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -72,6 +73,11 @@ class HomePageFragment : Fragment() {
 
         binding.imageButtonAddTasks.setOnClickListener{
             DialogAddOrUpdateTasksFragment().show(parentFragmentManager,"task")
+        }
+        
+        binding.materialCardViewStudents.setOnClickListener{
+            val intent = Intent(context, StudentsActivity::class.java)
+            startActivity(intent)
         }
     }
 
