@@ -24,8 +24,7 @@ import kotlin.collections.map
 @Singleton
 class KasUseCase @Inject constructor(
     private val repo: KasRepository,
-    private val jwtTokenStorage: JwtTokenStorage,
-    private val kasDataPagingSource: KasPagingSource
+    private val jwtTokenStorage: JwtTokenStorage
 ){
 
     private val userJwtToken = jwtTokenStorage.getJwtBearer()
@@ -47,7 +46,7 @@ class KasUseCase @Inject constructor(
                 pageSize = 10,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { kasDataPagingSource }
+            pagingSourceFactory = { KasPagingSource() }
         ).flow
     }
 

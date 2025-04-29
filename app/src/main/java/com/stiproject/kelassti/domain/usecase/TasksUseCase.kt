@@ -20,8 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class TasksUseCase @Inject constructor(
     private val repo: TasksRepository,
-    private val jwtTokenStorage: JwtTokenStorage,
-    private val tasksDataPagingSource: TasksPagingSource
+    private val jwtTokenStorage: JwtTokenStorage
 ){
 
     private val _refreshTrigger = MutableStateFlow(true)
@@ -41,7 +40,7 @@ class TasksUseCase @Inject constructor(
                 pageSize = 10,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { tasksDataPagingSource }
+            pagingSourceFactory = { TasksPagingSource() }
         ).flow
     }
 
