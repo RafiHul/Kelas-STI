@@ -35,6 +35,13 @@ interface KasApi {
         @Path("id") id: String
     ): Response<KasDataByIdResponse>
 
+    @GET("/transaksi")
+    suspend fun getKasByName(
+        @Query("name") name: String,
+        @Query("page") page: String,
+        @Query("size") size: String
+    ): Response<KasDataResponse>
+
     @PATCH("/transaksi/{id}")
     suspend fun updateKasById(
         @Path("id") id: String,

@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-29T01:49:29.497302508Z">
+        <DropdownSelection timestamp="2025-04-30T00:51:40.537300183Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/home/Rafihul/.android/avd/Small_Phone_Edited_API_26_OREO.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=WOR4C6JZSWJJ8HSG" />
             </handle>
           </Target>
         </DropdownSelection>

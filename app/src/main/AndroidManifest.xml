@@ -20,10 +20,13 @@
         android:theme="@style/Theme.KelasSTI"
         tools:targetApi="31">
         <activity
-            android:name=".KasActivity"
+            android:name=".presentation.ui.students.StudentsActivity"
             android:exported="false" />
         <activity
-            android:name=".LogRegActivity"
+            android:name=".presentation.ui.kas.KasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.ui.auth.LogRegActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,8 +35,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove"></provider>
 
         <meta-data
             android:name="preloaded_fonts"

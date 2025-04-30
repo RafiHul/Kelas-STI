@@ -7,20 +7,21 @@ import com.stiproject.kelassti.data.local.JwtTokenStorage
 import com.stiproject.kelassti.data.model.request.KasRequest
 import com.stiproject.kelassti.data.model.response.kas.KasData
 import com.stiproject.kelassti.data.model.response.kas.KasDataArray
+import com.stiproject.kelassti.data.remote.paging.KasByNamePagingSource
 import com.stiproject.kelassti.data.remote.paging.KasPagingSource
 import com.stiproject.kelassti.data.repository.KasRepository
 import com.stiproject.kelassti.domain.model.KasSummary
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.isNotEmpty
 import kotlin.collections.map
 
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @Singleton
 class KasUseCase @Inject constructor(
     private val repo: KasRepository,
@@ -28,17 +29,7 @@ class KasUseCase @Inject constructor(
 ){
 
     private val userJwtToken = jwtTokenStorage.getJwtBearer()
-    private val _refreshTrigger = MutableStateFlow(true)
     val kasSummary = KasSummary(0, 0, 0)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val getTransaksiPage = _refreshTrigger
-        .flatMapLatest {getKasPage()}
-    
-    fun refreshTriggered(){
-        _refreshTrigger.value = false
-        _refreshTrigger.value = true
-    }
 
     fun getKasPage(): Flow<PagingData<KasData>> {
         return Pager(
@@ -47,6 +38,16 @@ class KasUseCase @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { KasPagingSource() }
+        ).flow
+    }
+
+    fun getKasPageByMahasiswaName(name: String): Flow<PagingData<KasData>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { KasByNamePagingSource(name) }
         ).flow
     }
 
@@ -90,7 +91,7 @@ class KasUseCase @Inject constructor(
             return ApiResult.Failed("Gagal Menambahkan Data")
         }
 
-        refreshTriggered()
+
         getAllKasData()
         return ApiResult.Success(body.message, null)
     }
@@ -115,7 +116,6 @@ class KasUseCase @Inject constructor(
             return ApiResult.Failed(errorBody.parseErrorMessageJsonToString())
         }
 
-        refreshTriggered()
         getAllKasData()
         return ApiResult.Success(body.message,body.data)
     }

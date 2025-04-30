@@ -5,11 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.filter
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stiproject.kelassti.R
+import com.stiproject.kelassti.data.model.response.kas.KasData
 import com.stiproject.kelassti.databinding.FragmentKasBinding
 import com.stiproject.kelassti.presentation.dialog.DialogAuthorisasiFragment
 import com.stiproject.kelassti.presentation.adapter.KasAdapter
@@ -18,6 +22,7 @@ import com.stiproject.kelassti.util.convertToRupiahFormat
 import com.stiproject.kelassti.util.handleToastApiResult
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 class KasFragment : Fragment(R.layout.fragment_kas) {
 
@@ -37,10 +42,6 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        kasViewModel.getKas {
-            handleToastApiResult(context, it)
-        }
 
         kasViewModel.kasSummary.observe(viewLifecycleOwner){
             binding.textViewKasTotal.text = getString(R.string.rupiah_format,it.total.convertToRupiahFormat())
@@ -82,13 +83,27 @@ class KasFragment : Fragment(R.layout.fragment_kas) {
             }
         }
 
+        binding.searchViewKasByName.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                kasViewModel.fetchKasDataByName(query.toString())
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText == null || newText.isEmpty()){
+                    kasViewModel.fetchAllKasData()
+                }
+                return false
+            }
+
+        })
+
         parentFragmentManager.setFragmentResultListener("status", viewLifecycleOwner){ _, result ->
 
             val isAddOrUpdate = result.getBoolean("isAddOrUpdate")
-            Log.d("cekad", isAddOrUpdate.toString())
 
             if(isAddOrUpdate){
-                kasViewModel.refreshKasSummary()
+                kasViewModel.fetchAllKasData()
             }
         }
     }

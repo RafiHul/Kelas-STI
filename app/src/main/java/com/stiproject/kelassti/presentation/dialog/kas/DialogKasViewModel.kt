@@ -60,9 +60,7 @@ class DialogKasViewModel @Inject constructor(
             if (validateData is ValidateDataResult.Success){
                 when(val result = kasUseCase.updateKasDataById(id.toString(), kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
-                    is ApiResult.Success<*> -> {
-                        _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
-                    }
+                    is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
                 }
             } else {
                 _dialogKasState.postValue(DialogKasState.ValidationDataFailed((validateData as ValidateDataResult.Failed).message))
@@ -78,9 +76,7 @@ class DialogKasViewModel @Inject constructor(
             if (validateData is ValidateDataResult.Success){
                 when(val result = kasUseCase.postKasData(kasRequest)){
                     is ApiResult.Failed -> _dialogKasState.postValue(DialogKasState.ApiFailed(result.messageFailed))
-                    is ApiResult.Success<*> -> {
-                        _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
-                    }
+                    is ApiResult.Success<*> -> _dialogKasState.postValue(DialogKasState.ApiPostSuccess(result.messageSuccess))
                 }
             } else {
                 _dialogKasState.postValue(DialogKasState.ValidationDataFailed((validateData as ValidateDataResult.Failed).message))
