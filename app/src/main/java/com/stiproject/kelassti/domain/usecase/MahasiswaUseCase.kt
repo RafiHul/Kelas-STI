@@ -1,15 +1,16 @@
 package com.stiproject.kelassti.domain.usecase
 
-import android.util.Log
 import com.stiproject.kelassti.data.local.JwtTokenStorage
 import com.stiproject.kelassti.data.model.request.AddOrUpdateMahasiswaRequest
 import com.stiproject.kelassti.data.repository.MahasiswaRepository
 import com.stiproject.kelassti.util.ApiResult
 import com.stiproject.kelassti.util.parseErrorMessageJsonToString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -24,10 +25,11 @@ class MahasiswaUseCase @Inject constructor(
     private val jwtBearer = jwtTokenStorage.getJwtBearer()
     private val _searchQuery = MutableStateFlow("")
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val searchMahasiswaByNameResult = _searchQuery
+        .debounce(500)
+        .distinctUntilChanged()
         .flatMapLatest {
-            delay(500)
             fetchMahasiswaByName(it)
         }
 
