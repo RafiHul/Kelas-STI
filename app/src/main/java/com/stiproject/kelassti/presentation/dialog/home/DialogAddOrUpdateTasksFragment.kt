@@ -17,7 +17,6 @@ import com.stiproject.kelassti.data.model.response.dosen.DosenData
 import com.stiproject.kelassti.databinding.FragmentDialogAddOrUpdateTasksBinding
 import java.util.Calendar
 import com.stiproject.kelassti.R
-import com.stiproject.kelassti.presentation.dialog.kas.DialogAddOrUpdateKasFragment
 
 class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_add_or_update_tasks) {
 
@@ -49,6 +48,8 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
         val tasksId = args?.getInt("tasksId")
 
         dialogHomeViewModel.getAllDosen()
+        dialogHomeViewModel.initelize(tasksId)
+
         bindingTitleTaskInput = binding.editTextTitleTugas
         bindingDeskripsiTaskInput = binding.editTextDeskripsiTugas
         bindingButtonDeadlineTask = binding.buttonDeadlineTugas
@@ -68,12 +69,6 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
             showDatePickerDialog()
         }
 
-        binding.textViewTambahkanTugas.setOnClickListener{
-            val tasksRequest = createTasksRequest()
-
-            dialogHomeViewModel.createTasks(tasksRequest)
-        }
-
         dialogHomeViewModel.dialogHomeState.observe(viewLifecycleOwner){
             when(it){
                 is DialogHomeViewModel.DialogHomeState.ApiFailed -> {
@@ -87,7 +82,24 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
 
-                is DialogHomeViewModel.DialogHomeState.ApiGetTasksSuccess -> {}
+                is DialogHomeViewModel.DialogHomeState.ApiGetTasksSuccess -> {
+                    val tasksData = it.data
+                    if(tasksData != null){
+                        bindingTitleTaskInput.setText(tasksData.title)
+                        bindingDeskripsiTaskInput.setText(tasksData.description)
+                        pickedDeadline = tasksData.deadline // TODO: ini di cek apakah benar format date nya
+                        binding.textViewTambahkanTugas.text = "Update"
+
+                        binding.textViewTambahkanTugas.setOnClickListener{
+                            dialogHomeViewModel.updateTasksById(tasksData.id, createTasksRequest())
+                        }
+
+                    } else {
+                        binding.textViewTambahkanTugas.setOnClickListener{
+                            dialogHomeViewModel.createTasks(createTasksRequest())
+                        }
+                    }
+                }
                 DialogHomeViewModel.DialogHomeState.Idle -> {}
             }
         }
@@ -162,4 +174,13 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
         _binding = null
     }
 
+    companion object{
+        fun newInstance(tasksId: Int): DialogAddOrUpdateTasksFragment{
+            val args = Bundle()
+            val fragment = DialogAddOrUpdateTasksFragment()
+            args.putInt("tasksId",tasksId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }

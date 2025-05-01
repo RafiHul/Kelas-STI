@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stiproject.kelassti.data.model.response.tasks.TasksData
 import com.stiproject.kelassti.databinding.RecyclerviewitemTasksBinding
 
-class TasksAdapter():
+class TasksAdapter(val onClick: (Int) -> Unit):
     PagingDataAdapter<TasksData, TasksAdapter.MyViewHolder>(
     object : DiffUtil.ItemCallback<TasksData>() {
         override fun areItemsTheSame(
@@ -31,6 +31,10 @@ class TasksAdapter():
                 binding.textViewTime.text = currentItem.deadline.split("T")[0]
                 binding.textViewTugas.text = currentItem.title
                 binding.textViewNamaDosen.text = currentItem.dosen.name
+
+                binding.root.setOnClickListener{
+                    onClick(currentItem.id)
+                }
             }
         }
 

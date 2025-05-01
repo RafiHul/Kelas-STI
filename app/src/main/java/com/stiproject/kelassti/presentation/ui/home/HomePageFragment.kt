@@ -47,7 +47,9 @@ class HomePageFragment : Fragment() {
             }
         }
 
-        val tasksAdapter = TasksAdapter()
+        val tasksAdapter = TasksAdapter{
+            DialogAddOrUpdateTasksFragment.newInstance(it).show(parentFragmentManager, "updateTasks")
+        }
         binding.recyclerViewTasks.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
             adapter = tasksAdapter

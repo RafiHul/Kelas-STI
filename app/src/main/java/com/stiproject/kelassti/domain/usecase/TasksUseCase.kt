@@ -60,4 +60,32 @@ class TasksUseCase @Inject constructor(
         refreshTriggered()
         return ApiResult.Success(body.message, null)
     }
+
+    suspend fun getTasksById(id: Int): ApiResult {
+        val response = repo.getTasksById(id)
+        val body = response.body()
+
+        if (!response.isSuccessful || body == null) {
+            return ApiResult.Failed(response.errorBody().parseErrorMessageJsonToString())
+        }
+
+        return ApiResult.Success(body.message, body.data)
+    }
+
+    suspend fun updateTasksById(id: Int, tasksRequest: TasksRequest): ApiResult {
+        val response = repo.updateTasksById(jwtTokenStorage.getJwtBearer(), id, tasksRequest)
+        val body = response.body()
+        val errBody = response.errorBody()
+
+        if(!response.isSuccessful){
+            return ApiResult.Failed(errBody.parseErrorMessageJsonToString())
+        }
+
+        if(body == null){
+            return ApiResult.Failed("Gagal mengupdate data")
+        }
+
+        refreshTriggered()
+        return ApiResult.Success("Berhasil mengupdate data", null)
+    }
 }

@@ -101,7 +101,7 @@ class KasUseCase @Inject constructor(
         val body = response.body()
 
         if (!response.isSuccessful || body == null) {
-            return ApiResult.Failed("Gagal Mendapatkan Data") // TODO: ini bisa pake body.message (string)
+            return ApiResult.Failed(response.errorBody().parseErrorMessageJsonToString())
         }
 
         return ApiResult.Success(body.message, body.data)
