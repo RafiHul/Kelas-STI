@@ -84,6 +84,8 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
 
                 is DialogHomeViewModel.DialogHomeState.ApiGetTasksSuccess -> {
                     val tasksData = it.data
+                    binding.progressBarAddOrUpdateTasks.visibility = View.INVISIBLE
+                    binding.constraintLayoutMainAddOrUpdateTasks.visibility = View.VISIBLE
                     if(tasksData != null){
                         bindingTitleTaskInput.setText(tasksData.title)
                         bindingDeskripsiTaskInput.setText(tasksData.description)
@@ -100,7 +102,10 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
                         }
                     }
                 }
-                DialogHomeViewModel.DialogHomeState.Idle -> {}
+                DialogHomeViewModel.DialogHomeState.Loading -> {
+                    binding.progressBarAddOrUpdateTasks.visibility = View.VISIBLE
+                    binding.constraintLayoutMainAddOrUpdateTasks.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -164,13 +169,13 @@ class DialogAddOrUpdateTasksFragment : DialogFragment(R.layout.fragment_dialog_a
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            950
         )
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogHomeViewModel.setHomeStateBackToIdle()
+        dialogHomeViewModel.setHomeStateBackToLoading()
         _binding = null
     }
 

@@ -121,6 +121,9 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                 is DialogKasViewModel.DialogKasState.ApiGetSuccess -> {
                     val data = it.data
 
+                    binding.progressBarAddOrUpdateTransaksi.visibility = View.INVISIBLE
+                    binding.constraintLayoutMainAddOrUpdateTransaksi.visibility = View.VISIBLE
+
                     if(data != null){
                         binding.textViewTambahkanKas.text = "Edit"
 
@@ -170,7 +173,10 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
                     }
 
                 }
-                DialogKasViewModel.DialogKasState.Idle -> {}
+                DialogKasViewModel.DialogKasState.Loading -> {
+                    binding.progressBarAddOrUpdateTransaksi.visibility = View.VISIBLE
+                    binding.constraintLayoutMainAddOrUpdateTransaksi.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -210,7 +216,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            950
         )
     }
 
@@ -233,7 +239,7 @@ class DialogAddOrUpdateKasFragment : DialogFragment(R.layout.fragment_dialog_add
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogKasViewModel.setAddOrUpdateStateBackToIdle()
+        dialogKasViewModel.setAddOrUpdateStateBackToLoading()
         _binding = null
     }
 }

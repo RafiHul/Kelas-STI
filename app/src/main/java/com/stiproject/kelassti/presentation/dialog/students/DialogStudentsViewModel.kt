@@ -8,6 +8,7 @@ import com.stiproject.kelassti.data.model.response.mahasiswa.MahasiswaData
 import com.stiproject.kelassti.domain.model.ValidateDataResult
 import com.stiproject.kelassti.domain.usecase.MahasiswaUseCase
 import com.stiproject.kelassti.domain.usecase.ValidateDataUseCase
+import com.stiproject.kelassti.presentation.dialog.home.DialogHomeViewModel.DialogHomeState
 import com.stiproject.kelassti.util.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class DialogStudentsViewModel @Inject constructor(
     private val validateDataUseCase: ValidateDataUseCase
 ): ViewModel() {
 
-    private val _dialogStudentsState = MutableLiveData<DialogStudentsState>(DialogStudentsState.Idle)
+    private val _dialogStudentsState = MutableLiveData<DialogStudentsState>(DialogStudentsState.Loading)
     val dialogStudentsState = _dialogStudentsState
 
     fun initelize(nim: String?){
@@ -33,6 +34,7 @@ class DialogStudentsViewModel @Inject constructor(
     fun addStudents(addOrUpdateMahasiswaRequest: AddOrUpdateMahasiswaRequest){
         viewModelScope.launch{
 
+            _dialogStudentsState.value = DialogStudentsState.Loading
             val validateData = validateDataUseCase.validateAddMahasiswaRequest(addOrUpdateMahasiswaRequest)
 
             if (validateData is ValidateDataResult.Success){
@@ -57,6 +59,7 @@ class DialogStudentsViewModel @Inject constructor(
 
     fun updateStudents(addOrUpdateMahasiswaRequest: AddOrUpdateMahasiswaRequest){
         viewModelScope.launch{
+            _dialogStudentsState.value = DialogStudentsState.Loading
             val validateData = validateDataUseCase.validateAddMahasiswaRequest(addOrUpdateMahasiswaRequest)
 
             if (validateData is ValidateDataResult.Success){
@@ -79,13 +82,12 @@ class DialogStudentsViewModel @Inject constructor(
         }
     }
 
-    fun setStudentsStateBackToIdle(){
-        _dialogStudentsState.value = DialogStudentsState.Idle
+    fun setStudentsStateBackToLoading(){
+        _dialogStudentsState.value = DialogStudentsState.Loading
     }
 
     sealed class DialogStudentsState{
-        //        object Loading: DialogStudentsState()F
-        object Idle: DialogStudentsState()
+        object Loading: DialogStudentsState()
         data class GetStudentsSuccess(val mahasiswaData: MahasiswaData? = null): DialogStudentsState()
         data class GetStudentsFailed(val message: String): DialogStudentsState()
         data class ApiAddOrUpdateStudentsSuccess(val message: String): DialogStudentsState()

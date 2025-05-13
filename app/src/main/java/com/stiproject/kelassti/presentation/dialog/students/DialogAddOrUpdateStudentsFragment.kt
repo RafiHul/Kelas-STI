@@ -1,7 +1,6 @@
 package com.stiproject.kelassti.presentation.dialog.students
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +31,6 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val args = arguments
-        Log.d("ceknim", args?.getString("mahasiswaNim").toString())
         dialogStudentsViewModel.initelize(args?.getString("mahasiswaNim"))
 
         dialogStudentsViewModel.dialogStudentsState.observe(viewLifecycleOwner){
@@ -50,6 +48,8 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
                 }
                 is DialogStudentsViewModel.DialogStudentsState.GetStudentsSuccess -> {
                     val mahasiswaData = it.mahasiswaData
+                    binding.progressBarAddOrUpdateMahasiswa.visibility = View.INVISIBLE
+                    binding.constraintLayoutMainAddOrUpdateMahasiswa.visibility = View.VISIBLE
                     if(mahasiswaData != null){
                         binding.editTextNIMMahasiswa.setText(String.format(mahasiswaData.NIM.toString()))
                         binding.editTextNIMMahasiswa.visibility = View.GONE
@@ -77,7 +77,10 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
                     }
                 }
 
-                DialogStudentsViewModel.DialogStudentsState.Idle -> {}
+                DialogStudentsViewModel.DialogStudentsState.Loading -> {
+                    binding.progressBarAddOrUpdateMahasiswa.visibility = View.VISIBLE
+                    binding.constraintLayoutMainAddOrUpdateMahasiswa.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -91,7 +94,7 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            900
         )
     }
 
@@ -113,7 +116,7 @@ class DialogAddOrUpdateStudentsFragment : DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogStudentsViewModel.setStudentsStateBackToIdle()
+        dialogStudentsViewModel.setStudentsStateBackToLoading()
         _binding = null
     }
 }

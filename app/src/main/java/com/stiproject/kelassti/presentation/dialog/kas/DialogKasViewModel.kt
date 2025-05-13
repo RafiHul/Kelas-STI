@@ -23,7 +23,7 @@ class DialogKasViewModel @Inject constructor(
     private val validateDataUseCase: ValidateDataUseCase
 ): ViewModel() {
 
-    private val _dialogKasState = MutableLiveData<DialogKasState>(DialogKasState.Idle)
+    private val _dialogKasState = MutableLiveData<DialogKasState>(DialogKasState.Loading)
     val dialogKasState = _dialogKasState
 
     val searchMahasiswaByNameResult = mahasiswaUseCase.searchMahasiswaByNameResult
@@ -55,6 +55,8 @@ class DialogKasViewModel @Inject constructor(
     fun updateKasById(id: Int, kasRequest: KasRequest){
         viewModelScope.launch{
 
+            _dialogKasState.value = DialogKasState.Loading
+
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
 
             if (validateData is ValidateDataResult.Success){
@@ -70,6 +72,8 @@ class DialogKasViewModel @Inject constructor(
 
     fun addKasData(kasRequest: KasRequest){
         viewModelScope.launch{
+
+            _dialogKasState.value = DialogKasState.Loading
 
             val validateData = validateDataUseCase.validateKasRequest(kasRequest)
 
@@ -89,13 +93,12 @@ class DialogKasViewModel @Inject constructor(
         return userUseCase.cekUserAdmin()
     }
 
-    fun setAddOrUpdateStateBackToIdle(){
-        _dialogKasState.postValue(DialogKasState.Idle)
+    fun setAddOrUpdateStateBackToLoading(){
+        _dialogKasState.postValue(DialogKasState.Loading)
     }
 
     sealed class DialogKasState{
-//        object Loading: DialogKasState()
-        object Idle: DialogKasState()
+        object Loading: DialogKasState()
         data class ApiGetSuccess(val data: KasData? = null): DialogKasState()
         data class ApiPostSuccess(val message: String): DialogKasState()
         data class ApiFailed(val message: String): DialogKasState()

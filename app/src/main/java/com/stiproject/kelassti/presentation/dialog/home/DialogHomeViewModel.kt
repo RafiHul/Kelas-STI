@@ -10,7 +10,6 @@ import com.stiproject.kelassti.domain.model.ValidateDataResult
 import com.stiproject.kelassti.domain.usecase.DosenUseCase
 import com.stiproject.kelassti.domain.usecase.TasksUseCase
 import com.stiproject.kelassti.domain.usecase.ValidateDataUseCase
-import com.stiproject.kelassti.presentation.dialog.students.DialogStudentsViewModel.DialogStudentsState
 import com.stiproject.kelassti.util.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ class DialogHomeViewModel @Inject constructor(
     private val validateDataUseCase: ValidateDataUseCase
 ): ViewModel() {
 
-    private val _dialogHomeState = MutableLiveData<DialogHomeState>(DialogHomeState.Idle)
+    private val _dialogHomeState = MutableLiveData<DialogHomeState>(DialogHomeState.Loading)
     val dialogHomeState = _dialogHomeState
 
     private val _dosenState = MutableLiveData<DosenDataArray?>()
@@ -40,6 +39,7 @@ class DialogHomeViewModel @Inject constructor(
     fun createTasks(tasksRequest: TasksRequest){
         viewModelScope.launch{
 
+            _dialogHomeState.value = DialogHomeState.Loading
             val validateData = validateDataUseCase.validateTasksRequest(tasksRequest)
 
             if (validateData is ValidateDataResult.Success){
@@ -73,6 +73,7 @@ class DialogHomeViewModel @Inject constructor(
 
     fun updateTasksById(tasksId: Int, tasksRequest: TasksRequest){
         viewModelScope.launch{
+            _dialogHomeState.value = DialogHomeState.Loading
             val validateData = validateDataUseCase.validateTasksRequest(tasksRequest)
 
             if (validateData is ValidateDataResult.Success){
@@ -86,13 +87,12 @@ class DialogHomeViewModel @Inject constructor(
         }
     }
 
-    fun setHomeStateBackToIdle(){
-        _dialogHomeState.postValue(DialogHomeState.Idle)
+    fun setHomeStateBackToLoading(){
+        _dialogHomeState.postValue(DialogHomeState.Loading)
     }
 
     sealed class DialogHomeState{
-        //        object Loading: DialogHomeState()
-        object Idle: DialogHomeState()
+        object Loading: DialogHomeState()
         data class ApiGetTasksSuccess(val data: TasksData? = null): DialogHomeState()
         data class ApiPostTasksSuccess(val message: String): DialogHomeState()
         data class ApiFailed(val message: String): DialogHomeState()
